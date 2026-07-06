@@ -1,5 +1,6 @@
 import './App.css';
 import Cursor from './components/Cursor';
+import ScrollTop from './components/ScrollTop';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import About from './components/About';
@@ -19,6 +20,7 @@ function App() {
         <Projects />
         <Contact />
       </main>
+      <ScrollTop />
     </div>
   );
 }
