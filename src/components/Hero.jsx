@@ -5,13 +5,17 @@ import { gsap, isTest, prefersReduced } from '../lib/gsap';
 
 export default function Hero() {
   const typed = useTypewriter(PROFILE.roles);
+  const heroRef = useRef(null);
   const contentRef = useRef(null);
+  const blobsRef = useRef(null);
 
   useEffect(() => {
-    const el = contentRef.current;
-    if (!el || isTest || prefersReduced()) return undefined;
+    const hero = heroRef.current;
+    if (!hero || isTest || prefersReduced()) return undefined;
+
     const ctx = gsap.context(() => {
-      gsap.from(el.children, {
+      // Entrance stagger
+      gsap.from(contentRef.current.children, {
         y: 28,
         opacity: 0,
         duration: 0.8,
@@ -19,17 +23,44 @@ export default function Hero() {
         stagger: 0.12,
         delay: 0.1,
       });
-    }, el);
+
+      // Count-up on the stat numbers
+      contentRef.current.querySelectorAll('[data-count]').forEach((el) => {
+        const to = parseFloat(el.dataset.count) || 0;
+        const suffix = el.dataset.suffix || '';
+        const obj = { v: 0 };
+        gsap.fromTo(
+          obj,
+          { v: 0 },
+          {
+            v: to,
+            duration: 1.4,
+            ease: 'power3.out',
+            delay: 0.5,
+            onUpdate: () => {
+              el.textContent = `${Math.round(obj.v)}${suffix}`;
+            },
+          }
+        );
+      });
+
+      // Scroll parallax — blobs drift down, content lifts, both fade out
+      const scroll = { trigger: hero, start: 'top top', end: 'bottom top', scrub: 0.5 };
+      gsap.to(blobsRef.current, { yPercent: 35, ease: 'none', scrollTrigger: scroll });
+      gsap.to(contentRef.current, { yPercent: -8, opacity: 0.6, ease: 'none', scrollTrigger: scroll });
+    }, hero);
+
     return () => ctx.revert();
   }, []);
 
   return (
     <section
+      ref={heroRef}
       id="home"
       className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden px-6 pb-20 pt-[120px] text-center"
     >
       {/* animated blobs */}
-      <div className="absolute inset-0 z-0" aria-hidden="true">
+      <div ref={blobsRef} className="absolute inset-0 z-0" aria-hidden="true">
         <span className="absolute -left-[60px] -top-[120px] h-[460px] w-[460px] rounded-full bg-[#6366f1] opacity-[var(--blob-opacity)] blur-[70px] animate-floata" />
         <span className="absolute -right-[80px] top-[20%] h-[380px] w-[380px] rounded-full bg-[#22d3ee] opacity-[var(--blob-opacity)] blur-[70px] animate-floatb" />
         <span className="absolute -bottom-[100px] left-[30%] h-[340px] w-[340px] rounded-full bg-[#ec4899] opacity-[var(--blob-opacity)] blur-[70px] animate-floatc" />
@@ -60,7 +91,13 @@ export default function Hero() {
         <div className="mt-16 flex flex-wrap justify-center gap-12 max-[560px]:gap-[30px]">
           {PROFILE.stats.map((s) => (
             <div key={s.label} className="flex flex-col">
-              <span className="text-grad font-display text-[2.2rem] font-bold">{s.value}</span>
+              <span
+                className="text-grad font-display text-[2.2rem] font-bold"
+                data-count={parseInt(s.value, 10)}
+                data-suffix={s.value.replace(/[0-9]/g, '')}
+              >
+                {s.value}
+              </span>
               <span className="mt-0.5 text-[0.85rem] text-muted">{s.label}</span>
             </div>
           ))}
