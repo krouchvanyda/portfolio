@@ -1,6 +1,7 @@
 import './App.css';
 import Cursor from './components/Cursor';
 import ScrollTop from './components/ScrollTop';
+import ChatBot from './components/ChatBot';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import About from './components/About';
@@ -21,6 +22,7 @@ function App() {
         <Contact />
       </main>
       <ScrollTop />
+      <ChatBot />
     </div>
   );
 }

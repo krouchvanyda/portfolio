@@ -28,7 +28,6 @@ export default function Contact() {
 
       <footer className="footer">
         <span>© {new Date().getFullYear()} {PROFILE.name}. Crafted with React.</span>
-        <a href="#home">Back to top ↑</a>
       </footer>
     </section>
   );

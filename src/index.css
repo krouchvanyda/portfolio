@@ -54,6 +54,12 @@
 html {
   scroll-behavior: smooth;
   scroll-padding-top: 90px;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE / old Edge */
+}
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Edge */
 }
 
 body {
