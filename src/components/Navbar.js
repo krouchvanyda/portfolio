@@ -29,12 +29,31 @@ function ThemeToggle() {
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const [active, setActive] = useState('home');
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 30);
     onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
+  // Scroll-spy: highlight the nav link for the section in view.
+  useEffect(() => {
+    if (typeof IntersectionObserver === 'undefined') return undefined;
+    const sections = LINKS.map((l) => document.getElementById(l.href.slice(1))).filter(Boolean);
+    if (!sections.length) return undefined;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) setActive(entry.target.id);
+        });
+      },
+      { rootMargin: '-45% 0px -50% 0px', threshold: 0 }
+    );
+    sections.forEach((s) => observer.observe(s));
+    return () => observer.disconnect();
   }, []);
 
   return (
@@ -47,7 +66,12 @@ export default function Navbar() {
 
         <nav className={`nav__links ${open ? 'nav__links--open' : ''}`}>
           {LINKS.map((l) => (
-            <a key={l.href} href={l.href} onClick={() => setOpen(false)}>
+            <a
+              key={l.href}
+              href={l.href}
+              className={active === l.href.slice(1) ? 'is-active' : ''}
+              onClick={() => setOpen(false)}
+            >
               {l.label}
             </a>
           ))}
