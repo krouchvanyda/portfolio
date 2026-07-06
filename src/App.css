@@ -430,6 +430,60 @@
 .footer a:hover { color: var(--text); }
 
 /* ============================================================
+   Custom cursor + pointer spotlight
+   ============================================================ */
+.cursor__dot,
+.cursor__ring {
+  position: fixed;
+  top: 0; left: 0;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 10000;
+  opacity: 0;
+  will-change: transform;
+}
+.cursor__dot {
+  width: 7px; height: 7px;
+  background: var(--accent-2);
+  transition: opacity 0.3s ease;
+}
+.cursor__ring {
+  width: 34px; height: 34px;
+  border: 1.5px solid var(--accent-1);
+  transition: width 0.28s ease, height 0.28s ease, border-color 0.28s ease,
+              background 0.28s ease, opacity 0.3s ease;
+}
+.cursor__ring--hover {
+  width: 62px; height: 62px;
+  border-color: var(--accent-3);
+  background: rgba(129, 140, 248, 0.08);
+}
+.cursor__ring--down { width: 26px; height: 26px; }
+
+body.has-cursor .cursor__dot,
+body.has-cursor .cursor__ring { opacity: 1; }
+
+/* Soft glow that follows the pointer, sitting in the background */
+.cursor-spotlight {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  background: radial-gradient(
+    340px circle at var(--mx, 50%) var(--my, 50%),
+    rgba(99, 102, 241, 0.12),
+    transparent 72%
+  );
+}
+body.has-cursor .cursor-spotlight { opacity: 1; }
+
+/* Hide the native cursor only when the custom one is active */
+body.has-cursor,
+body.has-cursor * { cursor: none !important; }
+
+/* ============================================================
    Keyframes
    ============================================================ */
 @keyframes fadeUp { to { opacity: 1; transform: none; } }
