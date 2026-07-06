@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-const R = 22;
+const R = 18;
 const C = 2 * Math.PI * R;
 
 export default function ScrollTop() {
@@ -26,31 +26,33 @@ export default function ScrollTop() {
 
   return (
     <button
-      className={`scrolltop ${visible ? 'scrolltop--show' : ''}`}
       onClick={toTop}
       aria-label="Back to top"
       title="Back to top"
+      className={`group fixed bottom-[28px] right-[28px] z-[90] grid h-[44px] w-[44px] place-items-center rounded-full border border-[var(--border)] bg-[var(--nav-bg)] text-ink shadow-[0_10px_30px_-12px_rgba(0,0,0,0.5)] backdrop-blur-md transition-[opacity,transform,box-shadow] duration-[350ms] [transition-timing-function:cubic-bezier(0.34,1.56,0.64,1)] hover:-translate-y-[3px] hover:shadow-[0_16px_40px_-12px_rgba(99,102,241,0.7)] ${
+        visible ? 'pointer-events-auto scale-100 opacity-100' : 'pointer-events-none translate-y-4 scale-[0.8] opacity-0'
+      }`}
     >
-      <svg className="scrolltop__ring" viewBox="0 0 52 52" width="52" height="52" aria-hidden="true">
+      <svg className="absolute inset-0 -rotate-90" viewBox="0 0 44 44" width="44" height="44" aria-hidden="true">
         <defs>
           <linearGradient id="scrolltop-grad" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0%" style={{ stopColor: 'var(--accent-1)' }} />
-            <stop offset="55%" style={{ stopColor: 'var(--accent-2)' }} />
-            <stop offset="100%" style={{ stopColor: 'var(--accent-3)' }} />
+            <stop offset="0%" style={{ stopColor: 'rgb(var(--accent-1))' }} />
+            <stop offset="55%" style={{ stopColor: 'rgb(var(--accent-2))' }} />
+            <stop offset="100%" style={{ stopColor: 'rgb(var(--accent-3))' }} />
           </linearGradient>
         </defs>
-        <circle className="scrolltop__track" cx="26" cy="26" r={R} />
+        <circle className="fill-none stroke-[var(--border)] [stroke-width:2.5]" cx="22" cy="22" r={R} />
         <circle
-          className="scrolltop__prog"
-          cx="26"
-          cy="26"
+          className="fill-none [stroke-linecap:round] [stroke-width:2.5] [transition:stroke-dashoffset_0.15s_linear]"
+          cx="22"
+          cy="22"
           r={R}
           stroke="url(#scrolltop-grad)"
           strokeDasharray={C}
           strokeDashoffset={C * (1 - progress)}
         />
       </svg>
-      <span className="scrolltop__arrow">↑</span>
+      <span className="relative text-[1rem] leading-none animate-arrowbob group-hover:[animation-duration:0.8s]">↑</span>
     </button>
   );
 }

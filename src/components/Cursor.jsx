@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 
-const INTERACTIVE = 'a, button, input, textarea, .skill-card, .project, .theme-toggle';
+const INTERACTIVE = 'a, button, input, textarea, article';
 
 export default function Cursor() {
   const dotRef = useRef(null);

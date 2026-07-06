@@ -1,4 +1,3 @@
-import './App.css';
 import Cursor from './components/Cursor';
 import ScrollTop from './components/ScrollTop';
 import ChatBot from './components/ChatBot';
@@ -11,7 +10,7 @@ import Contact from './components/Contact';
 
 function App() {
   return (
-    <div className="app">
+    <div className="relative overflow-hidden">
       <Cursor />
       <Navbar />
       <main>
