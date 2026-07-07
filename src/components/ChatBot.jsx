@@ -76,6 +76,7 @@ export default function ChatBot() {
   const bodyRef = useRef(null);
   const inputRef = useRef(null);
 
+  
   useEffect(() => {
     bodyRef.current?.scrollTo?.({ top: bodyRef.current.scrollHeight, behavior: 'smooth' });
   }, [messages, typing, open]);
