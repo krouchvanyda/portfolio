@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { motion } from 'framer-motion';
 
 const R = 18;
 const C = 2 * Math.PI * R;
@@ -25,13 +26,16 @@ export default function ScrollTop() {
   };
 
   return (
-    <button
+    <motion.button
       onClick={toTop}
       aria-label="Back to top"
       title="Back to top"
-      className={`group fixed bottom-[28px] right-[28px] z-[90] grid h-[44px] w-[44px] place-items-center rounded-full border border-[var(--border)] bg-[var(--nav-bg)] text-ink shadow-[0_10px_30px_-12px_rgba(0,0,0,0.5)] backdrop-blur-md transition-[opacity,transform,box-shadow] duration-[350ms] [transition-timing-function:cubic-bezier(0.34,1.56,0.64,1)] hover:-translate-y-[3px] hover:shadow-[0_16px_40px_-12px_rgba(99,102,241,0.7)] ${
-        visible ? 'pointer-events-auto scale-100 opacity-100' : 'pointer-events-none translate-y-4 scale-[0.8] opacity-0'
-      }`}
+      animate={visible ? { opacity: 1, y: 0, scale: 1 } : { opacity: 0, y: 16, scale: 0.8 }}
+      whileHover={{ y: -3 }}
+      whileTap={{ scale: 0.9 }}
+      transition={{ type: 'spring', stiffness: 300, damping: 22 }}
+      style={{ pointerEvents: visible ? 'auto' : 'none' }}
+      className="group fixed bottom-[28px] right-[28px] z-[90] grid h-[44px] w-[44px] place-items-center rounded-full border border-[var(--border)] bg-[var(--nav-bg)] text-ink shadow-[0_10px_30px_-12px_rgba(0,0,0,0.5)] backdrop-blur-md hover:shadow-[0_16px_40px_-12px_rgba(99,102,241,0.7)]"
     >
       <svg className="absolute inset-0 -rotate-90" viewBox="0 0 44 44" width="44" height="44" aria-hidden="true">
         <defs>
@@ -53,6 +57,6 @@ export default function ScrollTop() {
         />
       </svg>
       <span className="relative text-[1rem] leading-none animate-arrowbob group-hover:[animation-duration:0.8s]">↑</span>
-    </button>
+    </motion.button>
   );
 }

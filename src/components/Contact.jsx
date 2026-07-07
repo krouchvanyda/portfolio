@@ -1,5 +1,8 @@
+import { motion } from 'framer-motion';
 import { PROFILE } from '../data';
 import Reveal from './Section';
+
+const spring = { type: 'spring', stiffness: 400, damping: 20 };
 
 export default function Contact() {
   return (
@@ -14,17 +17,34 @@ export default function Contact() {
           <p className="sec-sub relative z-[2]">
             Have a project in mind or just want to say hi? My inbox is always open.
           </p>
-          <a
+          <motion.a
             href={`mailto:${PROFILE.email}`}
             className="btn relative z-[2] mt-[34px] !px-10 !py-[18px] !text-[1.05rem]"
+            whileHover={{ y: -3 }}
+            whileTap={{ scale: 0.96 }}
+            transition={spring}
           >
             {PROFILE.email}
-          </a>
+          </motion.a>
 
           <div className="relative z-[2] mt-[34px] flex justify-center gap-7">
-            <a className="font-medium text-muted transition-colors hover:text-ink" href={PROFILE.socials.github} target="_blank" rel="noreferrer">GitHub</a>
-            <a className="font-medium text-muted transition-colors hover:text-ink" href={PROFILE.socials.linkedin} target="_blank" rel="noreferrer">LinkedIn</a>
-            <a className="font-medium text-muted transition-colors hover:text-ink" href={PROFILE.socials.dribbble} target="_blank" rel="noreferrer">Dribbble</a>
+            {[
+              ['GitHub', PROFILE.socials.github],
+              ['LinkedIn', PROFILE.socials.linkedin],
+              ['Dribbble', PROFILE.socials.dribbble],
+            ].map(([label, href]) => (
+              <motion.a
+                key={label}
+                className="font-medium text-muted transition-colors hover:text-ink"
+                href={href}
+                target="_blank"
+                rel="noreferrer"
+                whileHover={{ y: -2 }}
+                transition={spring}
+              >
+                {label}
+              </motion.a>
+            ))}
           </div>
         </Reveal>
       </div>

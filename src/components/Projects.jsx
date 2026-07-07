@@ -1,10 +1,16 @@
+import { motion } from 'framer-motion';
 import { PROJECTS } from '../data';
 import Reveal from './Section';
 
 function ProjectCard({ project, index }) {
   return (
     <Reveal delay={index * 100}>
-      <article className="surface group relative flex h-full flex-col overflow-hidden rounded-[20px] transition-[transform,border-color,box-shadow] duration-[400ms] hover:-translate-y-2 hover:border-[rgba(129,140,248,0.4)] hover:shadow-[0_30px_70px_-35px_rgba(99,102,241,0.7)]">
+      <motion.article
+        whileHover={{ y: -8 }}
+        whileTap={{ scale: 0.98 }}
+        transition={{ type: 'spring', stiffness: 300, damping: 22 }}
+        className="surface group relative flex h-full flex-col overflow-hidden rounded-[20px] transition-[border-color,box-shadow] duration-[400ms] hover:border-[rgba(129,140,248,0.4)] hover:shadow-[0_30px_70px_-35px_rgba(99,102,241,0.7)]"
+      >
         <div className="relative flex h-[170px] items-end overflow-hidden p-[18px]" style={{ background: project.accent }}>
           <span className="relative z-[2] rounded-full bg-black/30 px-3 py-[5px] text-[0.78rem] font-semibold text-white backdrop-blur-md">
             {project.platform}
@@ -24,7 +30,7 @@ function ProjectCard({ project, index }) {
             <span className="transition-transform duration-300 group-hover:translate-x-1.5">→</span>
           </span>
         </div>
-      </article>
+      </motion.article>
     </Reveal>
   );
 }
@@ -33,7 +39,7 @@ export default function Projects() {
   return (
     <section id="work" className="relative py-[110px] max-[560px]:py-20">
       <div className="mx-auto max-w-[1160px] px-6">
-        <div className="mx-auto mb-[60px] max-w-[620px] text-center">
+        <Reveal className="mx-auto mb-[60px] max-w-[620px] text-center">
           <p className="eyebrow mb-3.5">Selected work</p>
           <h2 className="sec-title">
             Featured <span className="text-grad">projects</span>
@@ -41,7 +47,7 @@ export default function Projects() {
           <p className="sec-sub">
             A few things I've built across mobile and web. Every project shipped to real users.
           </p>
-        </div>
+        </Reveal>
 
         <div className="grid grid-cols-[repeat(auto-fit,minmax(300px,1fr))] gap-[26px]">
           {PROJECTS.map((p, i) => (

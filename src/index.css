@@ -84,7 +84,6 @@
     box-shadow: 0 10px 30px -12px rgba(99, 102, 241, 0.7);
   }
   .btn:hover {
-    transform: translateY(-3px);
     filter: brightness(1.08);
     box-shadow: 0 16px 40px -12px rgba(99, 102, 241, 0.9);
   }

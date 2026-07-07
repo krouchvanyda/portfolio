@@ -1,7 +1,10 @@
 import { useEffect, useRef } from 'react';
+import { motion } from 'framer-motion';
 import { PROFILE } from '../data';
 import useTypewriter from '../hooks/useTypewriter';
 import { gsap, isTest, prefersReduced } from '../lib/gsap';
+
+const lift = { whileHover: { y: -3 }, whileTap: { scale: 0.96 }, transition: { type: 'spring', stiffness: 400, damping: 20 } };
 
 export default function Hero() {
   const typed = useTypewriter(PROFILE.roles);
@@ -84,8 +87,8 @@ export default function Hero() {
         <p className="mx-auto mt-[26px] max-w-[620px] text-[1.15rem] text-muted">{PROFILE.tagline}</p>
 
         <div className="mt-[38px] flex flex-wrap justify-center gap-4 max-[560px]:flex-col">
-          <a href="#work" className="btn max-[560px]:justify-center">View my work</a>
-          <a href="#contact" className="btn-ghost max-[560px]:justify-center">Get in touch</a>
+          <motion.a href="#work" className="btn max-[560px]:justify-center" {...lift}>View my work</motion.a>
+          <motion.a href="#contact" className="btn-ghost max-[560px]:justify-center" {...lift}>Get in touch</motion.a>
         </div>
 
         <div className="mt-16 flex flex-wrap justify-center gap-12 max-[560px]:gap-[30px]">

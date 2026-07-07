@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
 import { PROFILE, SKILLS, PROJECTS } from '../data';
 
 const WELCOME = {
@@ -98,25 +99,32 @@ export default function ChatBot() {
 
   return (
     <>
-      <button
-        className={`fixed bottom-[86px] right-[28px] z-[95] grid h-12 w-12 cursor-pointer place-items-center rounded-full border-0 bg-[image:var(--grad)] shadow-[0_14px_34px_-10px_rgba(99,102,241,0.8)] transition-transform duration-300 [transition-timing-function:cubic-bezier(0.34,1.56,0.64,1)] hover:-translate-y-[3px] hover:scale-105 ${
-          open ? 'rotate-90' : ''
-        }`}
+      <motion.button
+        className="fixed bottom-[86px] right-[28px] z-[95] grid h-12 w-12 cursor-pointer place-items-center rounded-full border-0 bg-[image:var(--grad)] shadow-[0_14px_34px_-10px_rgba(99,102,241,0.8)]"
         onClick={() => setOpen((o) => !o)}
         aria-label={open ? 'Close chat' : 'Open chat'}
+        animate={{ rotate: open ? 90 : 0 }}
+        whileHover={{ y: -3, scale: 1.08 }}
+        whileTap={{ scale: 0.9 }}
+        transition={{ type: 'spring', stiffness: 400, damping: 20 }}
       >
         <span className="text-[1.15rem] leading-none">{open ? '✕' : '💬'}</span>
         {!open && <span className="absolute inset-0 rounded-full border-2 border-accent1 animate-chatpulse" />}
-      </button>
+      </motion.button>
 
-      <div
-        className={`fixed bottom-[146px] right-[28px] z-[95] flex h-[min(66vh,470px)] w-[min(90vw,320px)] flex-col overflow-hidden rounded-[20px] border border-[var(--border)] bg-soft shadow-[0_30px_70px_-25px_rgba(0,0,0,0.6)] transition-[opacity,transform] duration-300 [transition-timing-function:cubic-bezier(0.22,1,0.36,1)] ${
-          open ? 'pointer-events-auto scale-100 opacity-100' : 'pointer-events-none translate-y-6 scale-[0.96] opacity-0'
-        }`}
-        role="dialog"
-        aria-label="Dalia's assistant"
-      >
-        <div className="flex items-center gap-3 border-b border-[var(--border)] bg-[var(--surface)] px-4 py-[15px]">
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            key="chat-panel"
+            className="fixed bottom-[146px] right-[28px] z-[95] flex h-[min(66vh,470px)] w-[min(90vw,320px)] flex-col overflow-hidden rounded-[20px] border border-[var(--border)] bg-soft shadow-[0_30px_70px_-25px_rgba(0,0,0,0.6)]"
+            role="dialog"
+            aria-label="Dalia's assistant"
+            initial={{ opacity: 0, y: 24, scale: 0.96 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 24, scale: 0.96 }}
+            transition={{ type: 'spring', stiffness: 260, damping: 24 }}
+          >
+            <div className="flex items-center gap-3 border-b border-[var(--border)] bg-[var(--surface)] px-4 py-[15px]">
           <div className="grid h-[38px] w-[38px] place-items-center rounded-xl bg-[image:var(--grad)] font-display text-[0.9rem] font-bold text-btntext">
             DS
           </div>
@@ -162,13 +170,16 @@ export default function ChatBot() {
           {messages.length <= 1 && !typing && (
             <div className="mt-1 flex flex-wrap gap-2">
               {SUGGESTIONS.map((s) => (
-                <button
+                <motion.button
                   key={s}
                   onClick={() => send(s)}
-                  className="cursor-pointer rounded-full border border-[var(--border)] bg-[var(--surface)] px-[13px] py-2 text-[0.8rem] text-ink transition hover:-translate-y-0.5 hover:border-[rgba(129,140,248,0.5)]"
+                  whileHover={{ y: -2 }}
+                  whileTap={{ scale: 0.95 }}
+                  transition={{ type: 'spring', stiffness: 400, damping: 20 }}
+                  className="cursor-pointer rounded-full border border-[var(--border)] bg-[var(--surface)] px-[13px] py-2 text-[0.8rem] text-ink transition-colors hover:border-[rgba(129,140,248,0.5)]"
                 >
                   {s}
-                </button>
+                </motion.button>
               ))}
             </div>
           )}
@@ -188,16 +199,21 @@ export default function ChatBot() {
             placeholder="Ask me anything…"
             className="flex-1 rounded-full border border-[var(--border)] bg-soft px-[15px] py-[11px] text-[0.9rem] text-ink outline-none transition-colors focus:border-[rgba(129,140,248,0.6)]"
           />
-          <button
+          <motion.button
             type="submit"
             aria-label="Send"
             disabled={!input.trim()}
-            className="grid h-10 w-10 shrink-0 cursor-pointer place-items-center rounded-full bg-[image:var(--grad)] text-btntext transition hover:scale-105 disabled:cursor-default disabled:opacity-45"
+            whileHover={{ scale: 1.08 }}
+            whileTap={{ scale: 0.9 }}
+            transition={{ type: 'spring', stiffness: 400, damping: 20 }}
+            className="grid h-10 w-10 shrink-0 cursor-pointer place-items-center rounded-full bg-[image:var(--grad)] text-btntext transition-opacity disabled:cursor-default disabled:opacity-45"
           >
             ➤
-          </button>
+          </motion.button>
         </form>
-      </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   );
 }

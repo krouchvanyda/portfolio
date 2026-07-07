@@ -1,5 +1,8 @@
 import { useEffect, useState } from 'react';
+import { motion } from 'framer-motion';
 import useTheme from '../hooks/useTheme';
+
+const lift = { whileHover: { y: -3 }, whileTap: { scale: 0.96 }, transition: { type: 'spring', stiffness: 400, damping: 20 } };
 
 const LINKS = [
   { href: '#home', label: 'Home' },
@@ -13,11 +16,13 @@ function ThemeToggle() {
   const [theme, toggle] = useTheme();
   const isDark = theme === 'dark';
   return (
-    <button
+    <motion.button
       className="inline-flex cursor-pointer items-center border-0 bg-transparent p-0"
       onClick={toggle}
       aria-label={`Switch to ${isDark ? 'light' : 'dark'} mode`}
       title={`Switch to ${isDark ? 'light' : 'dark'} mode`}
+      whileHover={{ scale: 1.05 }}
+      whileTap={{ scale: 0.9 }}
     >
       <span className="surface flex h-7 w-[52px] items-center rounded-full p-[3px]">
         <span
@@ -28,15 +33,17 @@ function ThemeToggle() {
           {isDark ? '🌙' : '☀️'}
         </span>
       </span>
-    </button>
+    </motion.button>
   );
 }
 
 function NavLink({ href, label, active, onClick, big }) {
   return (
-    <a
+    <motion.a
       href={href}
       onClick={onClick}
+      whileHover={{ y: -2 }}
+      transition={{ type: 'spring', stiffness: 400, damping: 20 }}
       className={`group relative font-medium transition-colors hover:text-ink ${
         active ? 'text-ink' : 'text-muted'
       } ${big ? 'border-b border-[var(--border)] py-3 text-[1.15rem]' : 'text-[0.95rem]'}`}
@@ -49,7 +56,7 @@ function NavLink({ href, label, active, onClick, big }) {
           }`}
         />
       )}
-    </a>
+    </motion.a>
   );
 }
 
@@ -100,9 +107,9 @@ export default function Navbar() {
             {LINKS.map((l) => (
               <NavLink key={l.href} {...l} active={activeId === l.href.slice(1)} />
             ))}
-            <a href="#contact" className="btn !px-[18px] !py-[9px] !text-[0.85rem]">
+            <motion.a href="#contact" className="btn !px-[18px] !py-[9px] !text-[0.85rem]" {...lift}>
               Let's talk
-            </a>
+            </motion.a>
           </nav>
 
           <ThemeToggle />
@@ -129,9 +136,9 @@ export default function Navbar() {
         {LINKS.map((l) => (
           <NavLink key={l.href} {...l} big active={activeId === l.href.slice(1)} onClick={() => setOpen(false)} />
         ))}
-        <a href="#contact" onClick={() => setOpen(false)} className="btn mt-4 justify-center">
+        <motion.a href="#contact" onClick={() => setOpen(false)} className="btn mt-4 justify-center" {...lift}>
           Let's talk
-        </a>
+        </motion.a>
       </nav>
     </header>
   );
