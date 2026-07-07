@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
+import { Stack } from '@mui/material';
 import { motion } from 'framer-motion';
 import useTheme from '../hooks/useTheme';
-
-const lift = { whileHover: { y: -3 }, whileTap: { scale: 0.96 }, transition: { type: 'spring', stiffness: 400, damping: 20 } };
+import { AppBox, GradButton, GradText } from '../theme/ui';
+import { AppAnimationMotion } from '../theme/motion';
 
 const LINKS = [
   { href: '#home', label: 'Home' },
@@ -16,47 +17,66 @@ function ThemeToggle() {
   const [theme, toggle] = useTheme();
   const isDark = theme === 'dark';
   return (
-    <motion.button
-      className="inline-flex cursor-pointer items-center border-0 bg-transparent p-0"
+    <AppBox
+      component={motion.button}
       onClick={toggle}
-      aria-label={`Switch to ${isDark ? 'light' : 'dark'} mode`}
-      title={`Switch to ${isDark ? 'light' : 'dark'} mode`}
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.9 }}
+      aria-label={`Switch to ${isDark ? 'light' : 'dark'} mode`}
+      sx={{ display: 'inline-flex', alignItems: 'center', border: 'none', background: 'none', p: 0, cursor: 'pointer' }}
     >
-      <span className="surface flex h-7 w-[52px] items-center rounded-full p-[3px]">
-        <span
-          className={`grid h-[22px] w-[22px] place-items-center rounded-full bg-soft text-[0.8rem] leading-none shadow-[0_2px_8px_rgba(0,0,0,0.25)] transition-transform duration-500 [transition-timing-function:cubic-bezier(0.34,1.56,0.64,1)] ${
-            isDark ? '' : 'translate-x-[24px] rotate-[360deg]'
-          }`}
+      <AppBox sx={{ width: 52, height: 28, borderRadius: '999px', display: 'flex', alignItems: 'center', p: '3px', background: 'var(--surface)', border: '1px solid var(--border)' }}>
+        <AppBox
+          sx={{
+            width: 22, height: 22, borderRadius: '50%', display: 'grid', placeItems: 'center',
+            fontSize: '0.8rem', lineHeight: 1, background: 'var(--bg-soft)',
+            boxShadow: '0 2px 8px rgba(0,0,0,0.25)',
+            transition: 'transform .5s cubic-bezier(0.34,1.56,0.64,1)',
+            transform: isDark ? 'none' : 'translateX(24px) rotate(360deg)',
+          }}
         >
           {isDark ? '🌙' : '☀️'}
-        </span>
-      </span>
-    </motion.button>
+        </AppBox>
+      </AppBox>
+    </AppBox>
   );
 }
 
 function NavLink({ href, label, active, onClick, big }) {
   return (
-    <motion.a
+    <AppBox
+      component={motion.a}
       href={href}
       onClick={onClick}
       whileHover={{ y: -2 }}
-      transition={{ type: 'spring', stiffness: 400, damping: 20 }}
-      className={`group relative font-medium transition-colors hover:text-ink ${
-        active ? 'text-ink' : 'text-muted'
-      } ${big ? 'border-b border-[var(--border)] py-3 text-[1.15rem]' : 'text-[0.95rem]'}`}
+      transition={AppAnimationMotion.spring}
+      sx={{
+        position: 'relative',
+        fontWeight: 500,
+        color: active ? 'var(--text)' : 'var(--muted)',
+        transition: 'color .2s',
+        '&:hover': { color: 'var(--text)' },
+        ...(big
+          ? { fontSize: '1.15rem', py: 1.5, borderBottom: '1px solid var(--border)', display: 'block' }
+          : { fontSize: '0.95rem' }),
+        '&::after': big
+          ? {}
+          : {
+              content: '""',
+              position: 'absolute',
+              left: 0,
+              bottom: '-6px',
+              height: '2px',
+              borderRadius: '2px',
+              background: 'var(--grad)',
+              width: active ? '100%' : 0,
+              transition: 'width .28s ease',
+            },
+        '&:hover::after': big ? {} : { width: '100%' },
+      }}
     >
       {label}
-      {!big && (
-        <span
-          className={`absolute -bottom-1.5 left-0 h-0.5 rounded bg-[image:var(--grad)] transition-all duration-300 group-hover:w-full ${
-            active ? 'w-full' : 'w-0'
-          }`}
-        />
-      )}
-    </motion.a>
+    </AppBox>
   );
 }
 
@@ -85,61 +105,108 @@ export default function Navbar() {
   }, []);
 
   return (
-    <header className="fixed inset-x-0 top-0 z-[100] animate-navdrop">
-      <div
-        className={`mx-auto flex items-center justify-between border transition-[max-width,margin,padding,background,border-color,box-shadow,border-radius] duration-500 ${
-          scrolled
-            ? 'mt-3 max-w-[1050px] rounded-full border-[var(--border)] bg-[var(--nav-bg)] px-4 py-[11px] shadow-[0_14px_44px_-20px_rgba(2,6,23,0.55)] backdrop-blur-xl md:pl-[22px]'
-            : 'max-w-[1160px] rounded-none border-transparent px-6 py-[18px]'
-        }`}
+    <AppBox
+      component={motion.header}
+      initial={{ opacity: 0, y: '-120%' }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.75, ease: AppAnimationMotion.ease }}
+      sx={{ position: 'fixed', inset: '0 0 auto 0', zIndex: 100 }}
+    >
+      <AppBox
+        sx={{
+          mx: 'auto',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          border: '1px solid transparent',
+          transition: 'max-width .45s cubic-bezier(0.22,1,0.36,1), margin .45s, padding .35s, background .35s, border-color .35s, box-shadow .35s, border-radius .45s',
+          ...(scrolled
+            ? {
+                maxWidth: '1050px',
+                mt: '12px',
+                px: '16px',
+                py: '11px',
+                pl: { md: '22px' },
+                background: 'var(--nav-bg)',
+                backdropFilter: 'blur(16px)',
+                borderColor: 'var(--border)',
+                borderRadius: '999px',
+                boxShadow: '0 14px 44px -20px rgba(2,6,23,0.55)',
+              }
+            : { maxWidth: '1160px', px: '24px', py: '18px', borderRadius: 0 }),
+        }}
       >
-        <a
+        <AppBox
+          component="a"
           href="#home"
           onClick={() => setOpen(false)}
-          className="group flex items-center gap-2 font-display text-[1.3rem] font-bold transition-transform hover:-translate-y-px"
+          sx={{ display: 'flex', alignItems: 'center', gap: 1, fontFamily: '"Space Grotesk", sans-serif', fontSize: '1.3rem', fontWeight: 700 }}
         >
-          <span className="h-[11px] w-[11px] rounded-full bg-[image:var(--grad)] shadow-[0_0_14px_2px_rgba(99,102,241,0.8)] animate-logopulse group-hover:shadow-[0_0_18px_4px_rgba(99,102,241,0.9)]" />
-          dalia<span className="text-grad">.dev</span>
-        </a>
+          <AppBox component="span" sx={{ width: 11, height: 11, borderRadius: '50%', background: 'var(--grad)', boxShadow: '0 0 14px 2px rgba(99,102,241,0.8)', animation: 'logopulse 2.4s ease-in-out infinite' }} />
+          dalia<GradText>.dev</GradText>
+        </AppBox>
 
-        <div className="flex items-center gap-3.5">
-          <nav className="hidden items-center gap-[30px] md:flex">
+        <Stack direction="row" alignItems="center" spacing={1.75}>
+          <Stack direction="row" alignItems="center" spacing={3.75} sx={{ display: { xs: 'none', md: 'flex' } }}>
             {LINKS.map((l) => (
               <NavLink key={l.href} {...l} active={activeId === l.href.slice(1)} />
             ))}
-            <motion.a href="#contact" className="btn !px-[18px] !py-[9px] !text-[0.85rem]" {...lift}>
+            <GradButton href="#contact" sx={{ px: '18px', py: '9px', fontSize: '0.85rem' }}>
               Let's talk
-            </motion.a>
-          </nav>
+            </GradButton>
+          </Stack>
 
           <ThemeToggle />
 
-          <button
-            className="flex flex-col gap-[5px] p-1.5 md:hidden"
+          <AppBox
+            component="button"
             onClick={() => setOpen((o) => !o)}
             aria-label="Toggle menu"
-            aria-expanded={open}
+            sx={{ display: { xs: 'flex', md: 'none' }, flexDirection: 'column', gap: '5px', background: 'none', border: 'none', p: '6px', cursor: 'pointer' }}
           >
-            <span className={`h-0.5 w-[26px] rounded bg-ink transition-transform ${open ? 'translate-y-[7px] rotate-45' : ''}`} />
-            <span className={`h-0.5 w-[26px] rounded bg-ink transition-opacity ${open ? 'opacity-0' : ''}`} />
-            <span className={`h-0.5 w-[26px] rounded bg-ink transition-transform ${open ? '-translate-y-[7px] -rotate-45' : ''}`} />
-          </button>
-        </div>
-      </div>
+            {[0, 1, 2].map((i) => (
+              <AppBox
+                key={i}
+                component="span"
+                sx={{
+                  width: 26, height: 2, borderRadius: '2px', background: 'var(--text)',
+                  transition: 'transform .3s ease, opacity .3s ease',
+                  ...(open && i === 0 && { transform: 'translateY(7px) rotate(45deg)' }),
+                  ...(open && i === 1 && { opacity: 0 }),
+                  ...(open && i === 2 && { transform: 'translateY(-7px) rotate(-45deg)' }),
+                }}
+              />
+            ))}
+          </AppBox>
+        </Stack>
+      </AppBox>
 
-      {/* Mobile slide-in menu */}
-      <nav
-        className={`fixed inset-y-0 right-0 flex w-[min(78vw,320px)] flex-col justify-center gap-6 border-l border-[var(--border)] bg-[var(--overlay-bg)] p-10 backdrop-blur-xl transition-transform duration-[350ms] [transition-timing-function:cubic-bezier(0.22,1,0.36,1)] md:hidden ${
-          open ? 'translate-x-0' : 'translate-x-full'
-        }`}
+      {/* Mobile menu */}
+      <AppBox
+        component="nav"
+        sx={{
+          display: { xs: 'flex', md: 'none' },
+          flexDirection: 'column',
+          justifyContent: 'center',
+          gap: 3,
+          position: 'fixed',
+          inset: '0 0 0 auto',
+          width: 'min(78vw, 320px)',
+          p: 5,
+          background: 'var(--overlay-bg)',
+          backdropFilter: 'blur(20px)',
+          borderLeft: '1px solid var(--border)',
+          transform: open ? 'translateX(0)' : 'translateX(100%)',
+          transition: 'transform .35s cubic-bezier(0.22,1,0.36,1)',
+        }}
       >
         {LINKS.map((l) => (
           <NavLink key={l.href} {...l} big active={activeId === l.href.slice(1)} onClick={() => setOpen(false)} />
         ))}
-        <motion.a href="#contact" onClick={() => setOpen(false)} className="btn mt-4 justify-center" {...lift}>
+        <GradButton href="#contact" onClick={() => setOpen(false)} sx={{ mt: 2 }}>
           Let's talk
-        </motion.a>
-      </nav>
-    </header>
+        </GradButton>
+      </AppBox>
+    </AppBox>
   );
 }

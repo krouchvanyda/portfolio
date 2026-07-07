@@ -1,121 +1,144 @@
-import { useEffect, useRef } from 'react';
-import { motion } from 'framer-motion';
+import { useEffect, useRef, useState } from 'react';
+import { Stack } from '@mui/material';
+import { animate, motion, useInView, useReducedMotion, useScroll, useTransform } from 'framer-motion';
 import { PROFILE } from '../data';
 import useTypewriter from '../hooks/useTypewriter';
-import { gsap, isTest, prefersReduced } from '../lib/gsap';
+import { AppBox, AppText, GradButton, GhostButton, GradText, Heading } from '../theme/ui';
+import { AppAnimationMotion } from '../theme/motion';
 
-const lift = { whileHover: { y: -3 }, whileTap: { scale: 0.96 }, transition: { type: 'spring', stiffness: 400, damping: 20 } };
+const containerV = { hidden: {}, show: { transition: { staggerChildren: 0.12, delayChildren: 0.1 } } };
+const itemV = {
+  hidden: { opacity: 0, y: 28 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.8, ease: AppAnimationMotion.ease } },
+};
+
+function Counter({ value }) {
+  const to = parseInt(value, 10) || 0;
+  const suffix = value.replace(/[0-9]/g, '');
+  const reduce = useReducedMotion();
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true });
+  const [display, setDisplay] = useState(reduce ? value : `0${suffix}`);
+
+  useEffect(() => {
+    if (!inView) return undefined;
+    if (reduce) {
+      setDisplay(value);
+      return undefined;
+    }
+    const controls = animate(0, to, {
+      duration: 1.4,
+      ease: AppAnimationMotion.ease,
+      onUpdate: (v) => setDisplay(`${Math.round(v)}${suffix}`),
+    });
+    return () => controls.stop();
+  }, [inView, to, suffix, value, reduce]);
+
+  return <span ref={ref}>{display}</span>;
+}
 
 export default function Hero() {
   const typed = useTypewriter(PROFILE.roles);
   const heroRef = useRef(null);
-  const contentRef = useRef(null);
-  const blobsRef = useRef(null);
+  const { scrollYProgress } = useScroll({ target: heroRef, offset: ['start start', 'end start'] });
+  const blobsY = useTransform(scrollYProgress, [0, 1], ['0%', '35%']);
+  const contentY = useTransform(scrollYProgress, [0, 1], ['0%', '-8%']);
+  const contentOpacity = useTransform(scrollYProgress, [0, 1], [1, 0.4]);
 
-  useEffect(() => {
-    const hero = heroRef.current;
-    if (!hero || isTest || prefersReduced()) return undefined;
-
-    const ctx = gsap.context(() => {
-      // Entrance stagger
-      gsap.from(contentRef.current.children, {
-        y: 28,
-        opacity: 0,
-        duration: 0.8,
-        ease: 'power3.out',
-        stagger: 0.12,
-        delay: 0.1,
-      });
-
-      // Count-up on the stat numbers
-      contentRef.current.querySelectorAll('[data-count]').forEach((el) => {
-        const to = parseFloat(el.dataset.count) || 0;
-        const suffix = el.dataset.suffix || '';
-        const obj = { v: 0 };
-        gsap.fromTo(
-          obj,
-          { v: 0 },
-          {
-            v: to,
-            duration: 1.4,
-            ease: 'power3.out',
-            delay: 0.5,
-            onUpdate: () => {
-              el.textContent = `${Math.round(obj.v)}${suffix}`;
-            },
-          }
-        );
-      });
-
-      // Scroll parallax — blobs drift down, content lifts, both fade out
-      const scroll = { trigger: hero, start: 'top top', end: 'bottom top', scrub: 0.5 };
-      gsap.to(blobsRef.current, { yPercent: 35, ease: 'none', scrollTrigger: scroll });
-      gsap.to(contentRef.current, { yPercent: -8, opacity: 0.6, ease: 'none', scrollTrigger: scroll });
-    }, hero);
-
-    return () => ctx.revert();
-  }, []);
+  const blob = { position: 'absolute', borderRadius: '50%', filter: 'blur(70px)', opacity: 'var(--blob-opacity)' };
 
   return (
-    <section
+    <AppBox
       ref={heroRef}
+      component="section"
       id="home"
-      className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden px-6 pb-20 pt-[120px] text-center"
+      sx={{
+        position: 'relative',
+        minHeight: '100vh',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        textAlign: 'center',
+        overflow: 'hidden',
+        px: '24px',
+        pt: '120px',
+        pb: '80px',
+      }}
     >
-      {/* animated blobs */}
-      <div ref={blobsRef} className="absolute inset-0 z-0" aria-hidden="true">
-        <span className="absolute -left-[60px] -top-[120px] h-[460px] w-[460px] rounded-full bg-[#6366f1] opacity-[var(--blob-opacity)] blur-[70px] animate-floata" />
-        <span className="absolute -right-[80px] top-[20%] h-[380px] w-[380px] rounded-full bg-[#22d3ee] opacity-[var(--blob-opacity)] blur-[70px] animate-floatb" />
-        <span className="absolute -bottom-[100px] left-[30%] h-[340px] w-[340px] rounded-full bg-[#ec4899] opacity-[var(--blob-opacity)] blur-[70px] animate-floatc" />
-      </div>
-      <div className="hero-grid" aria-hidden="true" />
+      <AppBox component={motion.div} style={{ y: blobsY }} sx={{ position: 'absolute', inset: 0, zIndex: 0 }} aria-hidden>
+        <AppBox sx={{ ...blob, width: 460, height: 460, background: '#6366f1', top: -120, left: -60, animation: 'floata 14s ease-in-out infinite' }} />
+        <AppBox sx={{ ...blob, width: 380, height: 380, background: '#22d3ee', top: '20%', right: -80, animation: 'floatb 17s ease-in-out infinite' }} />
+        <AppBox sx={{ ...blob, width: 340, height: 340, background: '#ec4899', bottom: -100, left: '30%', animation: 'floatc 20s ease-in-out infinite' }} />
+      </AppBox>
 
-      <div ref={contentRef} className="relative z-[2] max-w-[820px]">
-        <p className="surface mb-7 inline-flex items-center gap-[9px] rounded-full px-4 py-[7px] text-[0.85rem] text-muted">
-          <span className="h-2 w-2 rounded-full bg-[#34d399] animate-statusping" /> Available for new projects
-        </p>
+      <AppBox
+        aria-hidden
+        sx={{
+          position: 'absolute',
+          inset: 0,
+          backgroundImage:
+            'linear-gradient(var(--grid-line) 1px, transparent 1px), linear-gradient(90deg, var(--grid-line) 1px, transparent 1px)',
+          backgroundSize: '46px 46px',
+          WebkitMaskImage: 'radial-gradient(ellipse 70% 60% at 50% 40%, #000 40%, transparent 100%)',
+          maskImage: 'radial-gradient(ellipse 70% 60% at 50% 40%, #000 40%, transparent 100%)',
+        }}
+      />
 
-        <h1 className="text-[clamp(2.6rem,7vw,5rem)] font-bold">
-          Hi, I'm <span className="text-grad">{PROFILE.name}</span>
-        </h1>
-
-        <h2 className="mt-2.5 min-h-[1.3em] text-[clamp(1.5rem,4vw,2.6rem)] font-semibold">
-          <span className="text-grad">{typed}</span>
-          <span className="ml-1 inline-block h-[1em] w-[3px] align-[-0.12em] bg-accent2 animate-blink" />
-        </h2>
-
-        <p className="mx-auto mt-[26px] max-w-[620px] text-[1.15rem] text-muted">{PROFILE.tagline}</p>
-
-        <div className="mt-[38px] flex flex-wrap justify-center gap-4 max-[560px]:flex-col">
-          <motion.a href="#work" className="btn max-[560px]:justify-center" {...lift}>View my work</motion.a>
-          <motion.a href="#contact" className="btn-ghost max-[560px]:justify-center" {...lift}>Get in touch</motion.a>
-        </div>
-
-        <div className="mt-16 flex flex-wrap justify-center gap-12 max-[560px]:gap-[30px]">
-          {PROFILE.stats.map((s) => (
-            <div key={s.label} className="flex flex-col">
-              <span
-                className="text-grad font-display text-[2.2rem] font-bold"
-                data-count={parseInt(s.value, 10)}
-                data-suffix={s.value.replace(/[0-9]/g, '')}
-              >
-                {s.value}
-              </span>
-              <span className="mt-0.5 text-[0.85rem] text-muted">{s.label}</span>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <a
-        href="#about"
-        className="absolute bottom-[30px] left-1/2 z-[2] -translate-x-1/2"
-        aria-label="Scroll down"
+      <AppBox
+        component={motion.div}
+        style={{ y: contentY, opacity: contentOpacity }}
+        variants={containerV}
+        initial="hidden"
+        animate="show"
+        sx={{ position: 'relative', zIndex: 2, maxWidth: 820 }}
       >
-        <span className="relative block h-10 w-6 rounded-[14px] border-2 border-[var(--border)]">
-          <span className="absolute left-1/2 top-2 h-2 w-1 -translate-x-1/2 rounded bg-accent2 animate-scrolldot" />
-        </span>
-      </a>
-    </section>
+        <AppBox component={motion.div} variants={itemV}>
+          <AppBox component="span" sx={{ display: 'inline-flex', alignItems: 'center', gap: '9px', borderRadius: '999px', px: 2, py: '7px', mb: 3.5, fontSize: '0.85rem', color: 'var(--muted)', background: 'var(--surface)', border: '1px solid var(--border)' }}>
+            <AppBox component="span" sx={{ width: 8, height: 8, borderRadius: '50%', background: '#34d399', animation: 'statusping 2s ease-out infinite' }} />
+            Available for new projects
+          </AppBox>
+        </AppBox>
+
+        <Heading component={motion.h1} variants={itemV} sx={{ fontWeight: 700, lineHeight: 1.1, letterSpacing: '-0.02em', fontSize: 'clamp(2.6rem,7vw,5rem)' }}>
+          Hi, I'm <GradText>{PROFILE.name}</GradText>
+        </Heading>
+
+        <Heading component={motion.h2} variants={itemV} sx={{ mt: 1.25, minHeight: '1.3em', letterSpacing: '-0.02em', fontSize: 'clamp(1.5rem,4vw,2.6rem)' }}>
+          <GradText>{typed}</GradText>
+          <AppBox component="span" sx={{ display: 'inline-block', width: '3px', height: '1em', ml: '4px', verticalAlign: '-0.12em', background: 'var(--accent-2)', animation: 'blink 1s step-end infinite' }} />
+        </Heading>
+
+        <AppText component={motion.p} variants={itemV} sx={{ mx: 'auto', mt: '26px', maxWidth: 620, fontSize: '1.15rem' }}>
+          {PROFILE.tagline}
+        </AppText>
+
+        <AppBox component={motion.div} variants={itemV}>
+          <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} justifyContent="center" sx={{ mt: '38px' }}>
+            <GradButton href="#work">View my work</GradButton>
+            <GhostButton href="#contact">Get in touch</GhostButton>
+          </Stack>
+        </AppBox>
+
+        <AppBox component={motion.div} variants={itemV}>
+          <Stack direction="row" spacing={{ xs: 3.75, sm: 6 }} justifyContent="center" flexWrap="wrap" sx={{ mt: 8 }}>
+            {PROFILE.stats.map((s) => (
+              <AppBox key={s.label} sx={{ display: 'flex', flexDirection: 'column' }}>
+                <GradText sx={{ fontFamily: '"Space Grotesk", sans-serif', fontSize: '2.2rem', fontWeight: 700 }}>
+                  <Counter value={s.value} />
+                </GradText>
+                <AppBox component="span" sx={{ mt: '2px', fontSize: '0.85rem', color: 'var(--muted)' }}>{s.label}</AppBox>
+              </AppBox>
+            ))}
+          </Stack>
+        </AppBox>
+      </AppBox>
+
+      <AppBox component="a" href="#about" aria-label="Scroll down" sx={{ position: 'absolute', bottom: 30, left: '50%', transform: 'translateX(-50%)', zIndex: 2 }}>
+        <AppBox sx={{ position: 'relative', display: 'block', width: 24, height: 40, borderRadius: '14px', border: '2px solid var(--border)' }}>
+          <AppBox component="span" sx={{ position: 'absolute', left: '50%', top: 8, transform: 'translateX(-50%)', width: 4, height: 8, borderRadius: '2px', background: 'var(--accent-2)', animation: 'scrolldot 1.8s ease-in-out infinite' }} />
+        </AppBox>
+      </AppBox>
+    </AppBox>
   );
 }

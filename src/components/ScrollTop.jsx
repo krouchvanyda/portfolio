@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
+import { AppBox, AppIcon } from '../theme/ui';
+import { AppAnimationMotion } from '../theme/motion';
 
 const R = 18;
 const C = 2 * Math.PI * R;
@@ -26,37 +28,59 @@ export default function ScrollTop() {
   };
 
   return (
-    <motion.button
+    <AppBox
+      component={motion.button}
       onClick={toTop}
       aria-label="Back to top"
       title="Back to top"
       animate={visible ? { opacity: 1, y: 0, scale: 1 } : { opacity: 0, y: 16, scale: 0.8 }}
       whileHover={{ y: -3 }}
       whileTap={{ scale: 0.9 }}
-      transition={{ type: 'spring', stiffness: 300, damping: 22 }}
+      transition={AppAnimationMotion.springSoft}
       style={{ pointerEvents: visible ? 'auto' : 'none' }}
-      className="group fixed bottom-[28px] right-[28px] z-[90] grid h-[44px] w-[44px] place-items-center rounded-full border border-[var(--border)] bg-[var(--nav-bg)] text-ink shadow-[0_10px_30px_-12px_rgba(0,0,0,0.5)] backdrop-blur-md hover:shadow-[0_16px_40px_-12px_rgba(99,102,241,0.7)]"
+      sx={{
+        position: 'fixed',
+        bottom: 28,
+        right: 28,
+        zIndex: 90,
+        width: 44,
+        height: 44,
+        display: 'grid',
+        placeItems: 'center',
+        borderRadius: '50%',
+        border: '1px solid var(--border)',
+        background: 'var(--nav-bg)',
+        color: 'var(--text)',
+        cursor: 'pointer',
+        backdropFilter: 'blur(12px)',
+        boxShadow: '0 10px 30px -12px rgba(0,0,0,0.5)',
+        '&:hover': { boxShadow: '0 16px 40px -12px rgba(99,102,241,0.7)' },
+        '&:hover .arrow': { animationDuration: '0.8s' },
+      }}
     >
-      <svg className="absolute inset-0 -rotate-90" viewBox="0 0 44 44" width="44" height="44" aria-hidden="true">
+      <AppBox component="svg" viewBox="0 0 44 44" width="44" height="44" aria-hidden sx={{ position: 'absolute', inset: 0, transform: 'rotate(-90deg)' }}>
         <defs>
           <linearGradient id="scrolltop-grad" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0%" style={{ stopColor: 'rgb(var(--accent-1))' }} />
-            <stop offset="55%" style={{ stopColor: 'rgb(var(--accent-2))' }} />
-            <stop offset="100%" style={{ stopColor: 'rgb(var(--accent-3))' }} />
+            <stop offset="0%" style={{ stopColor: 'var(--accent-1)' }} />
+            <stop offset="55%" style={{ stopColor: 'var(--accent-2)' }} />
+            <stop offset="100%" style={{ stopColor: 'var(--accent-3)' }} />
           </linearGradient>
         </defs>
-        <circle className="fill-none stroke-[var(--border)] [stroke-width:2.5]" cx="22" cy="22" r={R} />
+        <circle cx="22" cy="22" r={R} fill="none" stroke="var(--border)" strokeWidth="2.5" />
         <circle
-          className="fill-none [stroke-linecap:round] [stroke-width:2.5] [transition:stroke-dashoffset_0.15s_linear]"
           cx="22"
           cy="22"
           r={R}
+          fill="none"
           stroke="url(#scrolltop-grad)"
+          strokeWidth="2.5"
+          strokeLinecap="round"
           strokeDasharray={C}
           strokeDashoffset={C * (1 - progress)}
+          style={{ transition: 'stroke-dashoffset 0.15s linear' }}
         />
-      </svg>
-      <span className="relative text-[1rem] leading-none animate-arrowbob group-hover:[animation-duration:0.8s]">↑</span>
-    </motion.button>
+      </AppBox>
+      <AppIcon className="arrow" size="1rem" sx={{ position: 'relative', animation: 'arrowbob 1.6s ease-in-out infinite' }}>↑</AppIcon>
+    </AppBox>
   );
 }

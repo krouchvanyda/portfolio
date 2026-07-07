@@ -1,58 +1,81 @@
 import { PROFILE } from '../data';
 import Reveal from './Section';
+import { AppBox, AppIcon, AppText, Eyebrow, GradText, Panel, Section, SectionTitle, Tag } from '../theme/ui';
+
+function Meta({ label, value }) {
+  return (
+    <AppBox>
+      <AppBox component="span" sx={{ display: 'block', mb: 0.5, fontSize: '0.78rem', textTransform: 'uppercase', letterSpacing: '0.15em', color: 'var(--accent-2)' }}>
+        {label}
+      </AppBox>
+      <AppBox component="span" sx={{ fontWeight: 600 }}>{value}</AppBox>
+    </AppBox>
+  );
+}
 
 export default function About() {
   return (
-    <section id="about" className="relative py-[110px] max-[560px]:py-20">
-      <div className="mx-auto grid max-w-[1160px] grid-cols-1 items-center gap-10 px-6 lg:grid-cols-[0.85fr_1.15fr] lg:gap-[70px]">
+    <Section id="about">
+      <AppBox
+        sx={{
+          maxWidth: '1160px',
+          mx: 'auto',
+          px: '24px',
+          display: 'grid',
+          alignItems: 'center',
+          gap: { xs: '40px', lg: '70px' },
+          gridTemplateColumns: { xs: '1fr', lg: '0.85fr 1.15fr' },
+        }}
+      >
         <Reveal>
-          <div className="relative mx-auto flex aspect-square w-full max-w-[360px] items-center justify-center overflow-hidden rounded-[28px] border border-[var(--border)] bg-soft lg:max-w-none">
-            <div className="absolute h-[70%] w-[70%] rounded-full bg-[image:var(--grad)] opacity-40 blur-[60px] animate-spinslow" />
-            <div className="relative z-[2] text-[6rem]">👩‍💻</div>
-            <div className="absolute bottom-5 z-[2] flex flex-wrap justify-center gap-2 px-5">
-              <span className="chip !bg-[var(--chip-solid)] backdrop-blur-md">React Native</span>
-              <span className="chip !bg-[var(--chip-solid)] backdrop-blur-md">Flutter</span>
-              <span className="chip !bg-[var(--chip-solid)] backdrop-blur-md">ReactJS</span>
-            </div>
-          </div>
+          <Panel
+            sx={{
+              position: 'relative',
+              aspectRatio: '1',
+              width: '100%',
+              maxWidth: { xs: 360, lg: 'none' },
+              mx: 'auto',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              overflow: 'hidden',
+              borderRadius: '28px',
+            }}
+          >
+            <AppBox sx={{ position: 'absolute', width: '70%', height: '70%', borderRadius: '50%', background: 'var(--grad)', filter: 'blur(60px)', opacity: 0.4, animation: 'spinslow 18s linear infinite' }} />
+            <AppIcon size="6rem" sx={{ position: 'relative', zIndex: 2 }}>👩‍💻</AppIcon>
+            <AppBox sx={{ position: 'absolute', bottom: 20, zIndex: 2, display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: 1, px: 2.5 }}>
+              {['React Native', 'Flutter', 'ReactJS'].map((t) => (
+                <Tag key={t} sx={{ background: 'var(--chip-solid)', backdropFilter: 'blur(8px)' }}>{t}</Tag>
+              ))}
+            </AppBox>
+          </Panel>
         </Reveal>
 
-        <div>
-          <Reveal>
-            <p className="eyebrow mb-3.5">About me</p>
+        <AppBox>
+          <Reveal><Eyebrow sx={{ mb: 1.75 }}>About me</Eyebrow></Reveal>
+          <Reveal delay={0.08}>
+            <SectionTitle>Building products people <GradText>love to use</GradText></SectionTitle>
           </Reveal>
-          <Reveal delay={80}>
-            <h2 className="sec-title">
-              Building products people <span className="text-grad">love to use</span>
-            </h2>
+          <Reveal delay={0.16}>
+            <AppText sx={{ mt: '18px', fontSize: '1.05rem' }}>
+              I'm a senior developer specialising in mobile and frontend engineering. I turn ideas into
+              polished, production-ready apps — with a strong focus on clean architecture, performance,
+              and delightful micro-interactions.
+            </AppText>
           </Reveal>
-          <Reveal delay={160}>
-            <p className="mt-[18px] text-[1.05rem] text-muted">
-              I'm a senior developer specialising in mobile and frontend engineering. I turn ideas
-              into polished, production-ready apps — with a strong focus on clean architecture,
-              performance, and delightful micro-interactions.
-            </p>
+          <Reveal delay={0.24}>
+            <AppText sx={{ mt: '18px', fontSize: '1.05rem' }}>
+              Whether it's a cross-platform app in React Native or Flutter, or a responsive web app in
+              ReactJS, I care about the details that make software feel effortless.
+            </AppText>
           </Reveal>
-          <Reveal delay={240}>
-            <p className="mt-[18px] text-[1.05rem] text-muted">
-              Whether it's a cross-platform app in React Native or Flutter, or a responsive web app
-              in ReactJS, I care about the details that make software feel effortless.
-            </p>
+          <Reveal delay={0.32} sx={{ mt: '30px', display: 'flex', flexWrap: 'wrap', gap: '50px' }}>
+            <Meta label="Location" value={PROFILE.location} />
+            <Meta label="Focus" value="Mobile · Frontend · UI/UX" />
           </Reveal>
-          <Reveal delay={320}>
-            <div className="mt-[30px] flex flex-wrap gap-[50px]">
-              <div>
-                <span className="mb-1 block text-[0.78rem] uppercase tracking-[0.15em] text-accent2">Location</span>
-                <span className="font-semibold">{PROFILE.location}</span>
-              </div>
-              <div>
-                <span className="mb-1 block text-[0.78rem] uppercase tracking-[0.15em] text-accent2">Focus</span>
-                <span className="font-semibold">Mobile · Frontend · UI/UX</span>
-              </div>
-            </div>
-          </Reveal>
-        </div>
-      </div>
-    </section>
+        </AppBox>
+      </AppBox>
+    </Section>
   );
 }

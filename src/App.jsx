@@ -1,4 +1,5 @@
 import { MotionConfig } from 'framer-motion';
+import MuiProvider from './theme/MuiProvider';
 import Cursor from './components/Cursor';
 import ScrollTop from './components/ScrollTop';
 import ChatBot from './components/ChatBot';
@@ -11,21 +12,23 @@ import Contact from './components/Contact';
 
 function App() {
   return (
-    <MotionConfig reducedMotion="user">
-      <div className="relative overflow-hidden">
-        <Cursor />
-        <Navbar />
-        <main>
-          <Hero />
-          <About />
-          <Skills />
-          <Projects />
-          <Contact />
-        </main>
-        <ScrollTop />
-        <ChatBot />
-      </div>
-    </MotionConfig>
+    <MuiProvider>
+      <MotionConfig reducedMotion="user">
+        <div className="relative overflow-hidden">
+          <Cursor />
+          <Navbar />
+          <main>
+            <Hero />
+            <About />
+            <Skills />
+            <Projects />
+            <Contact />
+          </main>
+          <ScrollTop />
+          <ChatBot />
+        </div>
+      </MotionConfig>
+    </MuiProvider>
   );
 }
 

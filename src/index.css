@@ -1,172 +1,160 @@
+/* ============================================================================
+   index.css — global stylesheet (loaded once, applies app-wide).
+   Contents:
+     1. Fonts               – Space Grotesk (display) + Inter (body)
+     2. Reset               – box-sizing + zero margin/padding
+     3. Theme tokens        – the --var() colours read by MUI sx / AppColors,
+                              swapped by the data-theme attribute (dark ↔ light)
+     4. Base elements       – html / body / links / images / selection / focus
+     5. Custom cursor       – the dot + trailing ring + spotlight (Cursor.jsx)
+     6. Theme-switch reveal – View Transitions API circular wipe
+     7. Ambient keyframes   – the looping CSS animations used via `animation:` sx
+     8. Reduced motion      – honour the OS "reduce motion" setting
+   ============================================================================ */
+
+/* 1. Fonts — Space Grotesk for headings, Inter for body text. */
 @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap');
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-@layer base {
-  :root,
-  :root[data-theme='dark'] {
-    --bg: 7 7 12;
-    --bg-soft: 14 14 24;
-    --text: 236 237 243;
-    --muted: 154 160 180;
-    --accent-1: 99 102 241;
-    --accent-2: 34 211 238;
-    --accent-3: 236 72 153;
-    --btn-text: 10 10 18;
-    --surface: rgba(255, 255, 255, 0.04);
-    --border: rgba(255, 255, 255, 0.09);
-    --nav-bg: rgba(9, 9, 16, 0.72);
-    --overlay-bg: rgba(9, 9, 16, 0.96);
-    --chip-solid: rgba(9, 9, 16, 0.7);
-    --grid-line: rgba(255, 255, 255, 0.028);
-    --blob-opacity: 0.55;
-    --grad: linear-gradient(120deg, #818cf8, #22d3ee 55%, #ec4899);
-    color-scheme: dark;
-  }
-
-  :root[data-theme='light'] {
-    --bg: 245 246 251;
-    --bg-soft: 255 255 255;
-    --text: 20 21 31;
-    --muted: 91 96 114;
-    --accent-1: 79 70 229;
-    --accent-2: 8 145 178;
-    --accent-3: 219 39 119;
-    --btn-text: 255 255 255;
-    --surface: rgba(15, 18, 45, 0.035);
-    --border: rgba(15, 18, 45, 0.1);
-    --nav-bg: rgba(255, 255, 255, 0.78);
-    --overlay-bg: rgba(255, 255, 255, 0.97);
-    --chip-solid: rgba(255, 255, 255, 0.8);
-    --grid-line: rgba(15, 18, 45, 0.04);
-    --blob-opacity: 0.3;
-    --grad: linear-gradient(120deg, #6366f1, #0891b2 55%, #db2777);
-    color-scheme: light;
-  }
-
-  html {
-    scroll-behavior: smooth;
-    scroll-padding-top: 90px;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-  }
-  html::-webkit-scrollbar,
-  body::-webkit-scrollbar {
-    display: none;
-  }
-  body {
-    @apply bg-page text-ink font-sans antialiased;
-    overflow-x: hidden;
-    transition: background 0.4s ease, color 0.4s ease;
-  }
-  h1, h2, h3 {
-    @apply font-display;
-    line-height: 1.1;
-    letter-spacing: -0.02em;
-  }
-  ::selection {
-    background: rgba(129, 140, 248, 0.35);
-    color: #fff;
-  }
-  :focus-visible {
-    outline: 2px solid rgb(var(--accent-1));
-    outline-offset: 3px;
-    border-radius: 3px;
-  }
+/* 2. Reset — predictable box model, strip default margins/padding. */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
-@layer components {
-  .btn {
-    @apply inline-flex cursor-pointer items-center gap-2 rounded-full px-7 py-3.5 text-[0.95rem] font-semibold text-btntext transition-[transform,box-shadow,filter] duration-200;
-    background: var(--grad);
-    box-shadow: 0 10px 30px -12px rgba(99, 102, 241, 0.7);
-  }
-  .btn:hover {
-    filter: brightness(1.08);
-    box-shadow: 0 16px 40px -12px rgba(99, 102, 241, 0.9);
-  }
-  .btn-ghost {
-    @apply inline-flex cursor-pointer items-center gap-2 rounded-full bg-transparent px-7 py-3.5 text-[0.95rem] font-semibold text-ink transition-colors duration-200;
-    border: 1px solid var(--border);
-  }
-  .btn-ghost:hover {
-    background: var(--surface);
-    border-color: rgba(129, 140, 248, 0.5);
-  }
-  .chip {
-    @apply inline-block rounded-full px-3 py-1 text-xs font-medium text-muted;
-    background: var(--surface);
-    border: 1px solid var(--border);
-  }
-  .text-grad {
-    background: var(--grad);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    color: transparent;
-  }
-  .surface {
-    background: var(--surface);
-    border: 1px solid var(--border);
-  }
-  .eyebrow {
-    @apply text-[0.75rem] font-semibold uppercase tracking-[0.22em] text-accent2;
-  }
-  .sec-title {
-    @apply text-[clamp(1.9rem,4vw,3rem)] font-bold;
-  }
-  .sec-sub {
-    @apply mt-4 text-[1.05rem] text-muted;
-  }
-  .hero-grid {
-    position: absolute;
-    inset: 0;
-    background-image:
-      linear-gradient(var(--grid-line) 1px, transparent 1px),
-      linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
-    background-size: 46px 46px;
-    -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, #000 40%, transparent 100%);
-    mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, #000 40%, transparent 100%);
-  }
+/* 3. Theme tokens — DARK (also the default when no data-theme is set).
+   These CSS variables are the single source of colour; JS reads them through
+   AppColors (src/theme/colors.js). Changing data-theme re-points them. */
+:root,
+:root[data-theme='dark'] {
+  --bg: #07070c;
+  --bg-soft: #0e0e18;
+  --surface: rgba(255, 255, 255, 0.04);
+  --border: rgba(255, 255, 255, 0.09);
+  --text: #ecedf3;
+  --muted: #9aa0b4;
+  --nav-bg: rgba(9, 9, 16, 0.72);
+  --overlay-bg: rgba(9, 9, 16, 0.96);
+  --chip-solid: rgba(9, 9, 16, 0.7);
+  --grid-line: rgba(255, 255, 255, 0.028);
+  --blob-opacity: 0.55;
+  --accent-1: #6366f1;
+  --accent-2: #22d3ee;
+  --accent-3: #ec4899;
+  --grad: linear-gradient(120deg, #818cf8, #22d3ee 55%, #ec4899);
+  --btn-text: #0a0a12;
+  color-scheme: dark;
 }
 
-/* Custom cursor (pointer-following, size transitions on hover) */
+/* Theme tokens — LIGHT (applied when <html data-theme="light">, set by useTheme). */
+:root[data-theme='light'] {
+  --bg: #f5f6fb;
+  --bg-soft: #ffffff;
+  --surface: rgba(15, 18, 45, 0.035);
+  --border: rgba(15, 18, 45, 0.1);
+  --text: #14151f;
+  --muted: #5b6072;
+  --nav-bg: rgba(255, 255, 255, 0.78);
+  --overlay-bg: rgba(255, 255, 255, 0.97);
+  --chip-solid: rgba(255, 255, 255, 0.8);
+  --grid-line: rgba(15, 18, 45, 0.04);
+  --blob-opacity: 0.3;
+  --accent-1: #4f46e5;
+  --accent-2: #0891b2;
+  --accent-3: #db2777;
+  --grad: linear-gradient(120deg, #6366f1, #0891b2 55%, #db2777);
+  --btn-text: #ffffff;
+  color-scheme: light;
+}
+
+/* 4. Base elements.
+   html — smooth anchor scrolling, offset for the fixed navbar (scroll-padding),
+   and a hidden scrollbar (cross-browser). */
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 90px;
+  scrollbar-width: none;        /* Firefox */
+  -ms-overflow-style: none;     /* old Edge/IE */
+}
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  display: none;                /* Chrome/Safari */
+}
+
+/* body — base font/colour from tokens; the transition animates the theme swap. */
+body {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  overflow-x: hidden;           /* never scroll sideways (blobs overflow off-screen) */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition: background 0.4s ease, color 0.4s ease;
+}
+
+/* Links inherit colour (styled per-component); images never overflow their box. */
+a { color: inherit; text-decoration: none; }
+img { max-width: 100%; display: block; }
+
+/* Text-highlight colour. */
+::selection {
+  background: rgba(129, 140, 248, 0.35);
+  color: #fff;
+}
+
+/* Keyboard-focus ring (only shows for keyboard users, not mouse clicks). */
+:focus-visible {
+  outline: 2px solid var(--accent-1);
+  outline-offset: 3px;
+  border-radius: 3px;
+}
+
+/* 5. Custom cursor (positions driven by Cursor.jsx).
+   Two fixed circles that follow the pointer: a small solid dot and a larger
+   trailing ring, plus a soft spotlight glow behind the content. Hidden until
+   the <body> gets `.has-cursor` (added only on devices with a real pointer). */
 .cursor__dot,
 .cursor__ring {
   position: fixed;
   top: 0;
   left: 0;
   border-radius: 50%;
-  pointer-events: none;
-  z-index: 10000;
-  opacity: 0;
-  will-change: transform;
+  pointer-events: none;         /* never intercept clicks */
+  z-index: 10000;               /* sit above everything */
+  opacity: 0;                   /* revealed by .has-cursor below */
+  will-change: transform;       /* hint: animated via transform each frame */
 }
+/* The precise dot that tracks the pointer 1:1. */
 .cursor__dot {
   width: 7px;
   height: 7px;
-  background: rgb(var(--accent-2));
+  background: var(--accent-2);
   transition: opacity 0.3s ease;
 }
+/* The lagging ring; its size/colour animate on the states below. */
 .cursor__ring {
   width: 34px;
   height: 34px;
-  border: 1.5px solid rgb(var(--accent-1));
+  border: 1.5px solid var(--accent-1);
   transition: width 0.28s ease, height 0.28s ease, border-color 0.28s ease,
     background 0.28s ease, opacity 0.3s ease;
 }
+/* Over an interactive element (link/button): ring grows + tints. */
 .cursor__ring--hover {
   width: 62px;
   height: 62px;
-  border-color: rgb(var(--accent-3));
+  border-color: var(--accent-3);
   background: rgba(129, 140, 248, 0.08);
 }
+/* While the mouse button is held down: ring shrinks. */
 .cursor__ring--down {
   width: 26px;
   height: 26px;
 }
+/* Radial glow that follows the pointer (--mx/--my set from JS), behind content. */
 .cursor-spotlight {
   position: fixed;
   inset: 0;
@@ -180,17 +168,22 @@
     transparent 72%
   );
 }
+/* Reveal the custom cursor pieces once a real pointer is detected. */
 body.has-cursor .cursor__dot,
 body.has-cursor .cursor__ring,
 body.has-cursor .cursor-spotlight {
   opacity: 1;
 }
+/* …and hide the native OS cursor so only ours shows. */
 body.has-cursor,
 body.has-cursor * {
   cursor: none !important;
 }
 
-/* Theme switch: expanding circular reveal (View Transitions API) */
+/* 6. Theme-switch reveal — the light/dark toggle uses the View Transitions API
+   (useTheme.jsx) to wipe in the new theme with an expanding circle. Here we just
+   stack the old/new snapshots correctly and disable the default cross-fade so the
+   JS-driven clip-path circle is the only effect. */
 ::view-transition-old(root),
 ::view-transition-new(root) {
   animation: none;
@@ -199,6 +192,26 @@ body.has-cursor * {
 ::view-transition-old(root) { z-index: 1; }
 ::view-transition-new(root) { z-index: 9999; }
 
+/* 7. Ambient keyframes — looping animations referenced from components via the
+   `animation:` sx prop. Each is named for where it's used: */
+@keyframes floata { 0%, 100% { transform: translate(0, 0) scale(1); } 50% { transform: translate(40px, 50px) scale(1.1); } }   /* hero blob drift */
+@keyframes floatb { 0%, 100% { transform: translate(0, 0) scale(1); } 50% { transform: translate(-50px, 40px) scale(1.15); } } /* hero blob drift */
+@keyframes floatc { 0%, 100% { transform: translate(0, 0) scale(1); } 50% { transform: translate(30px, -40px) scale(1.08); } }  /* hero blob drift */
+@keyframes blink { 50% { opacity: 0; } }                                                                                       /* typewriter caret */
+@keyframes logopulse { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.25); opacity: 0.7; } }            /* navbar logo dot */
+@keyframes statusping {                                                                                                         /* "available/online" ping */
+  0% { box-shadow: 0 0 0 0 rgba(52, 211, 153, 0.6); }
+  70% { box-shadow: 0 0 0 8px rgba(52, 211, 153, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(52, 211, 153, 0); }
+}
+@keyframes spinslow { to { transform: rotate(360deg); } }                                                                       /* About avatar glow spin */
+@keyframes scrolldot { 0% { opacity: 0; top: 8px; } 40% { opacity: 1; } 80% { opacity: 0; top: 22px; } 100% { opacity: 0; } }   /* hero scroll-hint dot */
+@keyframes arrowbob { 0%, 100% { transform: translateY(1px); } 50% { transform: translateY(-3px); } }                           /* back-to-top ↑ bob */
+@keyframes chatpulse { 0% { transform: scale(1); opacity: 0.7; } 100% { transform: scale(1.6); opacity: 0; } }                  /* chat launcher ring */
+
+/* 8. Reduced motion — if the OS requests less motion, near-instant all CSS
+   animations/transitions and disable smooth scroll. (Framer Motion is handled
+   separately via <MotionConfig reducedMotion="user"> in App.jsx.) */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

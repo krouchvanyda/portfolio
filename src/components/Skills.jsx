@@ -1,88 +1,60 @@
-import { useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { SKILLS } from '../data';
-import { gsap, isTest, prefersReduced } from '../lib/gsap';
 import Reveal from './Section';
+import { AppBox, AppIcon, AppText, Container, Eyebrow, GradText, Heading, HoverCard, Panel, Section, SectionSub, SectionTitle, Tag } from '../theme/ui';
+import { AppAnimationMotion } from '../theme/motion';
 
 function SkillCard({ skill, index }) {
-  const barRef = useRef(null);
-
-  useEffect(() => {
-    const bar = barRef.current;
-    if (!bar) return undefined;
-    if (isTest || prefersReduced()) {
-      bar.style.width = `${skill.level}%`;
-      return undefined;
-    }
-    const tween = gsap.fromTo(
-      bar,
-      { width: '0%' },
-      {
-        width: `${skill.level}%`,
-        duration: 1.2,
-        ease: 'power3.out',
-        delay: 0.2,
-        scrollTrigger: { trigger: bar, start: 'top 95%', once: true },
-      }
-    );
-    return () => {
-      tween.scrollTrigger?.kill();
-      tween.kill();
-    };
-  }, [skill.level]);
-
   return (
-    <Reveal delay={index * 120}>
-      <motion.article
-        whileHover={{ y: -8 }}
-        whileTap={{ scale: 0.99 }}
-        transition={{ type: 'spring', stiffness: 300, damping: 22 }}
-        className="surface group relative overflow-hidden rounded-[20px] p-8 transition-[border-color,box-shadow] duration-[400ms] hover:border-[rgba(129,140,248,0.4)] hover:shadow-[0_24px_60px_-30px_rgba(99,102,241,0.6)]"
-      >
-        <span className="pointer-events-none absolute inset-0 bg-[radial-gradient(400px_circle_at_50%_0%,rgba(99,102,241,0.12),transparent_60%)] opacity-0 transition-opacity duration-[400ms] group-hover:opacity-100" />
-        <div className="relative">
-          <div className="mb-5 grid h-[60px] w-[60px] place-items-center rounded-2xl border border-[var(--border)] bg-soft text-[1.8rem]">
-            {skill.icon}
-          </div>
-          <h3 className="text-[1.25rem] font-semibold">{skill.title}</h3>
-          <p className="mt-3 min-h-[72px] text-[0.95rem] text-muted">{skill.blurb}</p>
+    <Reveal delay={index * 0.12}>
+      <HoverCard sx={{ p: 4, '&:hover .skill-glow': { opacity: 1 } }}>
+        <AppBox className="skill-glow" sx={{ pointerEvents: 'none', position: 'absolute', inset: 0, opacity: 0, transition: 'opacity .4s', background: 'radial-gradient(400px circle at 50% 0%, rgba(99,102,241,0.12), transparent 60%)' }} />
+        <AppBox sx={{ position: 'relative' }}>
+          <Panel sx={{ mb: 2.5, width: 60, height: 60, display: 'grid', placeItems: 'center', borderRadius: '16px' }}>
+            <AppIcon size="1.8rem">{skill.icon}</AppIcon>
+          </Panel>
+          <Heading sx={{ fontSize: '1.25rem' }}>{skill.title}</Heading>
+          <AppText sx={{ mt: 1.5, minHeight: 72 }}>{skill.blurb}</AppText>
 
-          <div className="mt-5 h-[7px] overflow-hidden rounded-full border border-[var(--border)] bg-soft">
-            <span ref={barRef} className="block h-full rounded-full bg-[image:var(--grad)]" style={{ width: 0 }} />
-          </div>
-          <span className="mt-1.5 block text-right text-[0.8rem] font-semibold text-muted">{skill.level}%</span>
+          <Panel sx={{ mt: 2.5, height: 7, overflow: 'hidden', borderRadius: '999px' }}>
+            <AppBox
+              component={motion.div}
+              initial={{ width: 0 }}
+              whileInView={{ width: `${skill.level}%` }}
+              viewport={{ once: true }}
+              transition={{ duration: 1.2, ease: AppAnimationMotion.ease, delay: 0.2 }}
+              sx={{ height: '100%', borderRadius: '999px', background: 'var(--grad)' }}
+            />
+          </Panel>
+          <AppBox component="span" sx={{ mt: 0.75, display: 'block', textAlign: 'right', fontSize: '0.8rem', fontWeight: 600, color: 'var(--muted)' }}>{skill.level}%</AppBox>
 
-          <div className="mt-[18px] flex flex-wrap gap-2">
+          <AppBox sx={{ mt: '18px', display: 'flex', flexWrap: 'wrap', gap: 1 }}>
             {skill.tags.map((t) => (
-              <span key={t} className="chip">{t}</span>
+              <Tag key={t}>{t}</Tag>
             ))}
-          </div>
-        </div>
-      </motion.article>
+          </AppBox>
+        </AppBox>
+      </HoverCard>
     </Reveal>
   );
 }
 
 export default function Skills() {
   return (
-    <section id="skills" className="relative py-[110px] max-[560px]:py-20">
-      <div className="mx-auto max-w-[1160px] px-6">
-        <Reveal className="mx-auto mb-[60px] max-w-[620px] text-center">
-          <p className="eyebrow mb-3.5">What I do</p>
-          <h2 className="sec-title">
-            My <span className="text-grad">core skills</span>
-          </h2>
-          <p className="sec-sub">
-            Three platforms, one obsession — shipping fast, beautiful, reliable software.
-          </p>
+    <Section id="skills">
+      <Container>
+        <Reveal sx={{ maxWidth: 620, mx: 'auto', mb: '60px', textAlign: 'center' }}>
+          <Eyebrow sx={{ mb: 1.75 }}>What I do</Eyebrow>
+          <SectionTitle>My <GradText>core skills</GradText></SectionTitle>
+          <SectionSub>Three platforms, one obsession — shipping fast, beautiful, reliable software.</SectionSub>
         </Reveal>
 
-        <div className="grid grid-cols-[repeat(auto-fit,minmax(280px,1fr))] gap-6">
+        <AppBox sx={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 3 }}>
           {SKILLS.map((skill, i) => (
             <SkillCard key={skill.title} skill={skill} index={i} />
           ))}
-        </div>
-      </div>
-    </section>
+        </AppBox>
+      </Container>
+    </Section>
   );
 }

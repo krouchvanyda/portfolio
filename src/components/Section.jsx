@@ -1,38 +1,25 @@
-import { useEffect, useRef } from 'react';
-import { gsap, isTest, prefersReduced } from '../lib/gsap';
+import { motion } from 'framer-motion';
+import { AppBox } from '../theme/ui';
+import { AppAnimationMotion } from '../theme/motion';
 
-// Scroll-triggered reveal powered by GSAP ScrollTrigger.
-export default function Reveal({ children, className = '', as: Tag = 'div', delay = 0, y = 38 }) {
-  const ref = useRef(null);
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return undefined;
-    if (isTest || prefersReduced()) {
-      gsap.set(el, { opacity: 1, y: 0 });
-      return undefined;
-    }
-    const tween = gsap.fromTo(
-      el,
-      { opacity: 0, y },
-      {
-        opacity: 1,
-        y: 0,
-        duration: 0.7,
-        ease: 'power3.out',
-        delay: delay / 1000,
-        scrollTrigger: { trigger: el, start: 'top 90%', once: true },
-      }
-    );
-    return () => {
-      tween.scrollTrigger?.kill();
-      tween.kill();
-    };
-  }, [delay, y]);
-
+// Scroll-triggered reveal powered by Framer Motion (whileInView).
+export default function Reveal({ children, sx, delay = 0, component = 'div' }) {
   return (
-    <Tag ref={ref} className={className}>
+    <AppBox
+      component={motion[component] || motion.div}
+      sx={sx}
+      initial={AppAnimationMotion.reveal.hidden}
+      whileInView={AppAnimationMotion.reveal.show}
+      // `once` is intentionally omitted (defaults to false) so the reveal REPLAYS
+      // every time the element scrolls back into view. Add `once: true` to make it
+      // animate a single time and never re-trigger.
+      // `margin` shrinks the viewport 80px at the bottom, so the reveal starts
+      // slightly before the element is fully on screen.
+      //viewport={{ once: true, margin: '0px 0px -80px 0px' }} // it work only first time( once: true,)
+      viewport={{ margin: '0px 0px -80px 0px' }}
+      transition={{ duration: 0.7, ease: AppAnimationMotion.ease, delay }}
+    >
       {children}
-    </Tag>
+    </AppBox>
   );
 }
