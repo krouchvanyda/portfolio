@@ -69,6 +69,15 @@
   color-scheme: light;
 }
 
+/* Theme-independent colours — identical in light & dark. Defined once here and
+   mirrored in AppColors (src/theme/colors.js) so CSS and JS share one value. */
+:root {
+  --selection: rgba(129, 140, 248, 0.35);        /* text-highlight background */
+  --spotlight: rgba(99, 102, 241, 0.12);         /* cursor spotlight + skill-card glow */
+  --ring-hover-tint: rgba(129, 140, 248, 0.08);  /* cursor ring fill on hover */
+  --online: #34d399;                             /* "online / available" status dot */
+}
+
 /* 4. Base elements.
    html — smooth anchor scrolling, offset for the fixed navbar (scroll-padding),
    and a hidden scrollbar (cross-browser). */
@@ -101,7 +110,7 @@ img { max-width: 100%; display: block; }
 
 /* Text-highlight colour. */
 ::selection {
-  background: rgba(129, 140, 248, 0.35);
+  background: var(--selection);
   color: #fff;
 }
 
@@ -147,7 +156,7 @@ img { max-width: 100%; display: block; }
   width: 62px;
   height: 62px;
   border-color: var(--accent-3);
-  background: rgba(129, 140, 248, 0.08);
+  background: var(--ring-hover-tint);
 }
 /* While the mouse button is held down: ring shrinks. */
 .cursor__ring--down {
@@ -164,7 +173,7 @@ img { max-width: 100%; display: block; }
   transition: opacity 0.5s ease;
   background: radial-gradient(
     340px circle at var(--mx, 50%) var(--my, 50%),
-    rgba(99, 102, 241, 0.12),
+    var(--spotlight),
     transparent 72%
   );
 }

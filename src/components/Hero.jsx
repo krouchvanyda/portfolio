@@ -5,6 +5,7 @@ import { PROFILE } from '../data';
 import useTypewriter from '../hooks/useTypewriter';
 import { AppBox, AppText, GradButton, GhostButton, GradText, Heading } from '../theme/ui';
 import { AppAnimationMotion } from '../theme/motion';
+import { AppColors } from '../theme/colors';
 
 const containerV = { hidden: {}, show: { transition: { staggerChildren: 0.12, delayChildren: 0.1 } } };
 const itemV = {
@@ -67,9 +68,9 @@ export default function Hero() {
       }}
     >
       <AppBox component={motion.div} style={{ y: blobsY }} sx={{ position: 'absolute', inset: 0, zIndex: 0 }} aria-hidden>
-        <AppBox sx={{ ...blob, width: 460, height: 460, background: '#6366f1', top: -120, left: -60, animation: 'floata 14s ease-in-out infinite' }} />
-        <AppBox sx={{ ...blob, width: 380, height: 380, background: '#22d3ee', top: '20%', right: -80, animation: 'floatb 17s ease-in-out infinite' }} />
-        <AppBox sx={{ ...blob, width: 340, height: 340, background: '#ec4899', bottom: -100, left: '30%', animation: 'floatc 20s ease-in-out infinite' }} />
+        <AppBox sx={{ ...blob, width: 460, height: 460, background: AppColors.blobIndigo, top: -120, left: -60, animation: 'floata 14s ease-in-out infinite' }} />
+        <AppBox sx={{ ...blob, width: 380, height: 380, background: AppColors.blobCyan, top: '20%', right: -80, animation: 'floatb 17s ease-in-out infinite' }} />
+        <AppBox sx={{ ...blob, width: 340, height: 340, background: AppColors.blobPink, bottom: -100, left: '30%', animation: 'floatc 20s ease-in-out infinite' }} />
       </AppBox>
 
       <AppBox
@@ -95,7 +96,7 @@ export default function Hero() {
       >
         <AppBox component={motion.div} variants={itemV}>
           <AppBox component="span" sx={{ display: 'inline-flex', alignItems: 'center', gap: '9px', borderRadius: '999px', px: 2, py: '7px', mb: 3.5, fontSize: '0.85rem', color: 'var(--muted)', background: 'var(--surface)', border: '1px solid var(--border)' }}>
-            <AppBox component="span" sx={{ width: 8, height: 8, borderRadius: '50%', background: '#34d399', animation: 'statusping 2s ease-out infinite' }} />
+            <AppBox component="span" sx={{ width: 8, height: 8, borderRadius: '50%', background: AppColors.online, animation: 'statusping 2s ease-out infinite' }} />
             Available for new projects
           </AppBox>
         </AppBox>

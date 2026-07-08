@@ -4,6 +4,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { PROFILE, SKILLS, PROJECTS } from '../data';
 import { AppBox, AppIcon } from '../theme/ui';
 import { AppAnimationMotion } from '../theme/motion';
+import { AppColors } from '../theme/colors';
 
 const WELCOME = {
   role: 'bot',
@@ -108,7 +109,7 @@ export default function ChatBot() {
               <AppBox>
                 <AppBox sx={{ fontSize: '0.95rem', fontWeight: 600 }}>Dalia's Assistant</AppBox>
                 <AppBox sx={{ display: 'flex', alignItems: 'center', gap: 0.75, fontSize: '0.75rem', color: 'var(--muted)' }}>
-                  <AppBox component="span" sx={{ width: 7, height: 7, borderRadius: '50%', background: '#34d399' }} /> Online
+                  <AppBox component="span" sx={{ width: 7, height: 7, borderRadius: '50%', background: AppColors.online }} /> Online
                 </AppBox>
               </AppBox>
               <AppBox component="button" onClick={() => setOpen(false)} aria-label="Close" sx={{ ml: 'auto', border: 'none', background: 'none', cursor: 'pointer', borderRadius: '8px', p: 0.75, color: 'var(--muted)', transition: 'color .2s, background .2s', '&:hover': { background: 'var(--surface)', color: 'var(--text)' } }}>✕</AppBox>

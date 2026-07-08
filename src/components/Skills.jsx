@@ -3,12 +3,13 @@ import { SKILLS } from '../data';
 import Reveal from './Section';
 import { AppBox, AppIcon, AppText, Container, Eyebrow, GradText, Heading, HoverCard, Panel, Section, SectionSub, SectionTitle, Tag } from '../theme/ui';
 import { AppAnimationMotion } from '../theme/motion';
+import { AppColors } from '../theme/colors';
 
 function SkillCard({ skill, index }) {
   return (
     <Reveal delay={index * 0.12}>
       <HoverCard sx={{ p: 4, '&:hover .skill-glow': { opacity: 1 } }}>
-        <AppBox className="skill-glow" sx={{ pointerEvents: 'none', position: 'absolute', inset: 0, opacity: 0, transition: 'opacity .4s', background: 'radial-gradient(400px circle at 50% 0%, rgba(99,102,241,0.12), transparent 60%)' }} />
+        <AppBox className="skill-glow" sx={{ pointerEvents: 'none', position: 'absolute', inset: 0, opacity: 0, transition: 'opacity .4s', background: `radial-gradient(400px circle at 50% 0%, ${AppColors.spotlight}, transparent 60%)` }} />
         <AppBox sx={{ position: 'relative' }}>
           <Panel sx={{ mb: 2.5, width: 60, height: 60, display: 'grid', placeItems: 'center', borderRadius: '16px' }}>
             <AppIcon size="1.8rem">{skill.icon}</AppIcon>
