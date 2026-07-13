@@ -3,6 +3,7 @@ import { Stack } from '@mui/material';
 import { motion } from 'framer-motion';
 import useTheme from '../hooks/useTheme';
 import { AppBox, GradButton, GradText } from '../theme/ui';
+import { AppColors } from '../theme/colors';
 import { AppAnimationMotion } from '../theme/motion';
 
 const LINKS = [
@@ -25,11 +26,11 @@ function ThemeToggle() {
       aria-label={`Switch to ${isDark ? 'light' : 'dark'} mode`}
       sx={{ display: 'inline-flex', alignItems: 'center', border: 'none', background: 'none', p: 0, cursor: 'pointer' }}
     >
-      <AppBox sx={{ width: 52, height: 28, borderRadius: '999px', display: 'flex', alignItems: 'center', p: '3px', background: 'var(--surface)', border: '1px solid var(--border)' }}>
+      <AppBox sx={{ width: 52, height: 28, borderRadius: '999px', display: 'flex', alignItems: 'center', p: '3px', background: AppColors.surface, border: `1px solid ${AppColors.border}` }}>
         <AppBox
           sx={{
             width: 22, height: 22, borderRadius: '50%', display: 'grid', placeItems: 'center',
-            fontSize: '0.8rem', lineHeight: 1, background: 'var(--bg-soft)',
+            fontSize: '0.8rem', lineHeight: 1, background: AppColors.bgSoft,
             boxShadow: '0 2px 8px rgba(0,0,0,0.25)',
             transition: 'transform .5s cubic-bezier(0.34,1.56,0.64,1)',
             transform: isDark ? 'none' : 'translateX(24px) rotate(360deg)',
@@ -53,11 +54,11 @@ function NavLink({ href, label, active, onClick, big }) {
       sx={{
         position: 'relative',
         fontWeight: 500,
-        color: active ? 'var(--text)' : 'var(--muted)',
+        color: active ? AppColors.text : AppColors.muted,
         transition: 'color .2s',
-        '&:hover': { color: 'var(--text)' },
+        '&:hover': { color: AppColors.text },
         ...(big
-          ? { fontSize: '1.15rem', py: 1.5, borderBottom: '1px solid var(--border)', display: 'block' }
+          ? { fontSize: '1.15rem', py: 1.5, borderBottom: `1px solid ${AppColors.border}`, display: 'block' }
           : { fontSize: '0.95rem' }),
         '&::after': big
           ? {}
@@ -68,7 +69,7 @@ function NavLink({ href, label, active, onClick, big }) {
               bottom: '-6px',
               height: '2px',
               borderRadius: '2px',
-              background: 'var(--grad)',
+              background: AppColors.grad,
               width: active ? '100%' : 0,
               transition: 'width .28s ease',
             },
@@ -127,9 +128,9 @@ export default function Navbar() {
                 px: '16px',
                 py: '11px',
                 pl: { md: '22px' },
-                background: 'var(--nav-bg)',
+                background: AppColors.navBg,
                 backdropFilter: 'blur(16px)',
-                borderColor: 'var(--border)',
+                borderColor: AppColors.border,
                 borderRadius: '999px',
                 boxShadow: '0 14px 44px -20px rgba(2,6,23,0.55)',
               }
@@ -142,7 +143,7 @@ export default function Navbar() {
           onClick={() => setOpen(false)}
           sx={{ display: 'flex', alignItems: 'center', gap: 1, fontFamily: '"Space Grotesk", sans-serif', fontSize: '1.3rem', fontWeight: 700 }}
         >
-          <AppBox component="span" sx={{ width: 11, height: 11, borderRadius: '50%', background: 'var(--grad)', boxShadow: '0 0 14px 2px rgba(99,102,241,0.8)', animation: 'logopulse 2.4s ease-in-out infinite' }} />
+          <AppBox component="span" sx={{ width: 11, height: 11, borderRadius: '50%', background: AppColors.grad, boxShadow: '0 0 14px 2px rgba(99,102,241,0.8)', animation: 'logopulse 2.4s ease-in-out infinite' }} />
           dalia<GradText>.dev</GradText>
         </AppBox>
 
@@ -169,7 +170,7 @@ export default function Navbar() {
                 key={i}
                 component="span"
                 sx={{
-                  width: 26, height: 2, borderRadius: '2px', background: 'var(--text)',
+                  width: 26, height: 2, borderRadius: '2px', background: AppColors.text,
                   transition: 'transform .3s ease, opacity .3s ease',
                   ...(open && i === 0 && { transform: 'translateY(7px) rotate(45deg)' }),
                   ...(open && i === 1 && { opacity: 0 }),
@@ -193,9 +194,9 @@ export default function Navbar() {
           inset: '0 0 0 auto',
           width: 'min(78vw, 320px)',
           p: 5,
-          background: 'var(--overlay-bg)',
+          background: AppColors.overlayBg,
           backdropFilter: 'blur(20px)',
-          borderLeft: '1px solid var(--border)',
+          borderLeft: `1px solid ${AppColors.border}`,
           transform: open ? 'translateX(0)' : 'translateX(100%)',
           transition: 'transform .35s cubic-bezier(0.22,1,0.36,1)',
         }}

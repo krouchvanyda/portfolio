@@ -1,11 +1,12 @@
 import { PROFILE } from '../data';
 import Reveal from './Section';
 import { AppBox, AppIcon, AppText, Eyebrow, GradText, Panel, Section, SectionTitle, Tag } from '../theme/ui';
+import { AppColors } from '../theme/colors';
 
 function Meta({ label, value }) {
   return (
     <AppBox>
-      <AppBox component="span" sx={{ display: 'block', mb: 0.5, fontSize: '0.78rem', textTransform: 'uppercase', letterSpacing: '0.15em', color: 'var(--accent-2)' }}>
+      <AppBox component="span" sx={{ display: 'block', mb: 0.5, fontSize: '0.78rem', textTransform: 'uppercase', letterSpacing: '0.15em', color: AppColors.accent2 }}>
         {label}
       </AppBox>
       <AppBox component="span" sx={{ fontWeight: 600 }}>{value}</AppBox>
@@ -42,11 +43,11 @@ export default function About() {
               borderRadius: '28px',
             }}
           >
-            <AppBox sx={{ position: 'absolute', width: '70%', height: '70%', borderRadius: '50%', background: 'var(--grad)', filter: 'blur(60px)', opacity: 0.4, animation: 'spinslow 18s linear infinite' }} />
+            <AppBox sx={{ position: 'absolute', width: '70%', height: '70%', borderRadius: '50%', background: AppColors.grad, filter: 'blur(60px)', opacity: 0.4, animation: 'spinslow 18s linear infinite' }} />
             <AppIcon size="6rem" sx={{ position: 'relative', zIndex: 2 }}>👩‍💻</AppIcon>
             <AppBox sx={{ position: 'absolute', bottom: 20, zIndex: 2, display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: 1, px: 2.5 }}>
               {['React Native', 'Flutter', 'ReactJS'].map((t) => (
-                <Tag key={t} sx={{ background: 'var(--chip-solid)', backdropFilter: 'blur(8px)' }}>{t}</Tag>
+                <Tag key={t} sx={{ background: AppColors.chipSolid, backdropFilter: 'blur(8px)' }}>{t}</Tag>
               ))}
             </AppBox>
           </Panel>

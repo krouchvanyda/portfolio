@@ -1,12 +1,11 @@
 // ─────────────────────────────────────────────────────────────────────────────
 // colors.js — AppColors: the one place every colour is named.
 //
-// Values are FIXED literals (hex / rgba), taken from the dark theme. Because they
-// are hard-coded they do NOT follow the light/dark toggle — they render the same
-// in both themes. (To make a colour theme-aware again, set it back to a
-// 'var(--…)' token defined in src/index.css.)
+// Values are FIXED literals (hex / rgba / named), taken from the dark theme.
+// Because they are hard-coded they do NOT follow the light/dark toggle — every
+// colour renders the same in both themes. (To make one theme-aware again, set it
+// back to its 'var(--…)' token defined in src/index.css.)
 //
-// Use instead of scattering raw hex strings around the app:
 //     import { AppColors } from './colors';
 //     sx={{ color: AppColors.muted, background: AppColors.grad }}
 // ─────────────────────────────────────────────────────────────────────────────

@@ -24,10 +24,10 @@ function SkillCard({ skill, index }) {
               whileInView={{ width: `${skill.level}%` }}
               viewport={{ once: true }}
               transition={{ duration: 1.2, ease: AppAnimationMotion.ease, delay: 0.2 }}
-              sx={{ height: '100%', borderRadius: '999px', background: 'var(--grad)' }}
+              sx={{ height: '100%', borderRadius: '999px', background: AppColors.grad }}
             />
           </Panel>
-          <AppBox component="span" sx={{ mt: 0.75, display: 'block', textAlign: 'right', fontSize: '0.8rem', fontWeight: 600, color: 'var(--muted)' }}>{skill.level}%</AppBox>
+          <AppBox component="span" sx={{ mt: 0.75, display: 'block', textAlign: 'right', fontSize: '0.8rem', fontWeight: 600, color: AppColors.muted }}>{skill.level}%</AppBox>
 
           <AppBox sx={{ mt: '18px', display: 'flex', flexWrap: 'wrap', gap: 1 }}>
             {skill.tags.map((t) => (

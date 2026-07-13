@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { AppBox, AppIcon } from '../theme/ui';
+import { AppColors } from '../theme/colors';
 import { AppAnimationMotion } from '../theme/motion';
 
 const R = 18;
@@ -48,9 +49,9 @@ export default function ScrollTop() {
         display: 'grid',
         placeItems: 'center',
         borderRadius: '50%',
-        border: '1px solid var(--border)',
-        background: 'var(--nav-bg)',
-        color: 'var(--text)',
+        border: `1px solid ${AppColors.border}`,
+        background: AppColors.navBg,
+        color: AppColors.text,
         cursor: 'pointer',
         backdropFilter: 'blur(12px)',
         boxShadow: '0 10px 30px -12px rgba(0,0,0,0.5)',
@@ -61,12 +62,12 @@ export default function ScrollTop() {
       <AppBox component="svg" viewBox="0 0 44 44" width="44" height="44" aria-hidden sx={{ position: 'absolute', inset: 0, transform: 'rotate(-90deg)' }}>
         <defs>
           <linearGradient id="scrolltop-grad" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0%" style={{ stopColor: 'var(--accent-1)' }} />
-            <stop offset="55%" style={{ stopColor: 'var(--accent-2)' }} />
-            <stop offset="100%" style={{ stopColor: 'var(--accent-3)' }} />
+            <stop offset="0%" style={{ stopColor: AppColors.accent1 }} />
+            <stop offset="55%" style={{ stopColor: AppColors.accent2 }} />
+            <stop offset="100%" style={{ stopColor: AppColors.accent3 }} />
           </linearGradient>
         </defs>
-        <circle cx="22" cy="22" r={R} fill="none" stroke="var(--border)" strokeWidth="2.5" />
+        <circle cx="22" cy="22" r={R} fill="none" stroke={AppColors.border} strokeWidth="2.5" />
         <circle
           cx="22"
           cy="22"

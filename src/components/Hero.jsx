@@ -78,8 +78,7 @@ export default function Hero() {
         sx={{
           position: 'absolute',
           inset: 0,
-          backgroundImage:
-            'linear-gradient(var(--grid-line) 1px, transparent 1px), linear-gradient(90deg, var(--grid-line) 1px, transparent 1px)',
+          backgroundImage: `linear-gradient(${AppColors.gridLine} 1px, transparent 1px), linear-gradient(90deg, ${AppColors.gridLine} 1px, transparent 1px)`,
           backgroundSize: '46px 46px',
           WebkitMaskImage: 'radial-gradient(ellipse 70% 60% at 50% 40%, #000 40%, transparent 100%)',
           maskImage: 'radial-gradient(ellipse 70% 60% at 50% 40%, #000 40%, transparent 100%)',
@@ -95,7 +94,7 @@ export default function Hero() {
         sx={{ position: 'relative', zIndex: 2, maxWidth: 820 }}
       >
         <AppBox component={motion.div} variants={itemV}>
-          <AppBox component="span" sx={{ display: 'inline-flex', alignItems: 'center', gap: '9px', borderRadius: '999px', px: 2, py: '7px', mb: 3.5, fontSize: '0.85rem', color: 'var(--muted)', background: 'var(--surface)', border: '1px solid var(--border)' }}>
+          <AppBox component="span" sx={{ display: 'inline-flex', alignItems: 'center', gap: '9px', borderRadius: '999px', px: 2, py: '7px', mb: 3.5, fontSize: '0.85rem', color: AppColors.muted, background: AppColors.surface, border: `1px solid ${AppColors.border}` }}>
             <AppBox component="span" sx={{ width: 8, height: 8, borderRadius: '50%', background: AppColors.online, animation: 'statusping 2s ease-out infinite' }} />
             Available for new projects
           </AppBox>
@@ -107,7 +106,7 @@ export default function Hero() {
 
         <Heading component={motion.h2} variants={itemV} sx={{ mt: 1.25, minHeight: '1.3em', letterSpacing: '-0.02em', fontSize: 'clamp(1.5rem,4vw,2.6rem)' }}>
           <GradText>{typed}</GradText>
-          <AppBox component="span" sx={{ display: 'inline-block', width: '3px', height: '1em', ml: '4px', verticalAlign: '-0.12em', background: 'var(--accent-2)', animation: 'blink 1s step-end infinite' }} />
+          <AppBox component="span" sx={{ display: 'inline-block', width: '3px', height: '1em', ml: '4px', verticalAlign: '-0.12em', background: AppColors.accent2, animation: 'blink 1s step-end infinite' }} />
         </Heading>
 
         <AppText component={motion.p} variants={itemV} sx={{ mx: 'auto', mt: '26px', maxWidth: 620, fontSize: '1.15rem' }}>
@@ -128,7 +127,7 @@ export default function Hero() {
                 <GradText sx={{ fontFamily: '"Space Grotesk", sans-serif', fontSize: '2.2rem', fontWeight: 700 }}>
                   <Counter value={s.value} />
                 </GradText>
-                <AppBox component="span" sx={{ mt: '2px', fontSize: '0.85rem', color: 'var(--muted)' }}>{s.label}</AppBox>
+                <AppBox component="span" sx={{ mt: '2px', fontSize: '0.85rem', color: AppColors.muted }}>{s.label}</AppBox>
               </AppBox>
             ))}
           </Stack>
@@ -136,8 +135,8 @@ export default function Hero() {
       </AppBox>
 
       <AppBox component="a" href="#about" aria-label="Scroll down" sx={{ position: 'absolute', bottom: 30, left: '50%', transform: 'translateX(-50%)', zIndex: 2 }}>
-        <AppBox sx={{ position: 'relative', display: 'block', width: 24, height: 40, borderRadius: '14px', border: '2px solid var(--border)' }}>
-          <AppBox component="span" sx={{ position: 'absolute', left: '50%', top: 8, transform: 'translateX(-50%)', width: 4, height: 8, borderRadius: '2px', background: 'var(--accent-2)', animation: 'scrolldot 1.8s ease-in-out infinite' }} />
+        <AppBox sx={{ position: 'relative', display: 'block', width: 24, height: 40, borderRadius: '14px', border: `2px solid ${AppColors.border}` }}>
+          <AppBox component="span" sx={{ position: 'absolute', left: '50%', top: 8, transform: 'translateX(-50%)', width: 4, height: 8, borderRadius: '2px', background: AppColors.accent2, animation: 'scrolldot 1.8s ease-in-out infinite' }} />
         </AppBox>
       </AppBox>
     </AppBox>

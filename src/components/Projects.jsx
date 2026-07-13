@@ -1,6 +1,7 @@
 import { PROJECTS } from '../data';
 import Reveal from './Section';
 import { AppBox, AppIcon, AppText, Container, Eyebrow, GradText, Heading, HoverCard, Section, SectionSub, SectionTitle, Tag } from '../theme/ui';
+import { AppColors } from '../theme/colors';
 
 function ProjectCard({ project, index }) {
   return (
@@ -30,7 +31,7 @@ function ProjectCard({ project, index }) {
               <Tag key={t}>{t}</Tag>
             ))}
           </AppBox>
-          <AppBox component="span" sx={{ mt: 2.5, display: 'inline-flex', alignItems: 'center', gap: 1, fontSize: '0.92rem', fontWeight: 600, color: 'var(--accent-2)' }}>
+          <AppBox component="span" sx={{ mt: 2.5, display: 'inline-flex', alignItems: 'center', gap: 1, fontSize: '0.92rem', fontWeight: 600, color: AppColors.accent2 }}>
             View case study
             <AppIcon className="arrow" sx={{ transition: 'transform .3s ease' }}>→</AppIcon>
           </AppBox>

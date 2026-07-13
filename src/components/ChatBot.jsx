@@ -85,10 +85,10 @@ export default function ChatBot() {
         whileHover={{ y: -3, scale: 1.08 }}
         whileTap={{ scale: 0.9 }}
         transition={AppAnimationMotion.spring}
-        sx={{ position: 'fixed', bottom: 86, right: 28, zIndex: 95, width: 48, height: 48, display: 'grid', placeItems: 'center', borderRadius: '50%', border: 'none', cursor: 'pointer', background: 'var(--grad)', boxShadow: '0 14px 34px -10px rgba(99,102,241,0.8)' }}
+        sx={{ position: 'fixed', bottom: 86, right: 28, zIndex: 95, width: 48, height: 48, display: 'grid', placeItems: 'center', borderRadius: '50%', border: 'none', cursor: 'pointer', background: AppColors.grad, boxShadow: '0 14px 34px -10px rgba(99,102,241,0.8)' }}
       >
         <AppIcon size="1.15rem">{open ? '✕' : '💬'}</AppIcon>
-        {!open && <AppBox component="span" sx={{ position: 'absolute', inset: 0, borderRadius: '50%', border: '2px solid var(--accent-1)', animation: 'chatpulse 2s ease-out infinite' }} />}
+        {!open && <AppBox component="span" sx={{ position: 'absolute', inset: 0, borderRadius: '50%', border: `2px solid ${AppColors.accent1}`, animation: 'chatpulse 2s ease-out infinite' }} />}
       </AppBox>
 
       <AnimatePresence>
@@ -102,17 +102,17 @@ export default function ChatBot() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 24, scale: 0.96 }}
             transition={AppAnimationMotion.springPanel}
-            sx={{ position: 'fixed', bottom: 146, right: 28, zIndex: 95, display: 'flex', flexDirection: 'column', width: 'min(90vw, 320px)', height: 'min(66vh, 470px)', overflow: 'hidden', borderRadius: '20px', border: '1px solid var(--border)', background: 'var(--bg-soft)', boxShadow: '0 30px 70px -25px rgba(0,0,0,0.6)' }}
+            sx={{ position: 'fixed', bottom: 146, right: 28, zIndex: 95, display: 'flex', flexDirection: 'column', width: 'min(90vw, 320px)', height: 'min(66vh, 470px)', overflow: 'hidden', borderRadius: '20px', border: `1px solid ${AppColors.border}`, background: AppColors.bgSoft, boxShadow: '0 30px 70px -25px rgba(0,0,0,0.6)' }}
           >
-            <AppBox sx={{ display: 'flex', alignItems: 'center', gap: 1.5, px: 2, py: '15px', borderBottom: '1px solid var(--border)', background: 'var(--surface)' }}>
-              <AppBox sx={{ width: 38, height: 38, display: 'grid', placeItems: 'center', borderRadius: '12px', background: 'var(--grad)', fontFamily: '"Space Grotesk", sans-serif', fontSize: '0.9rem', fontWeight: 700, color: 'var(--btn-text)' }}>DS</AppBox>
+            <AppBox sx={{ display: 'flex', alignItems: 'center', gap: 1.5, px: 2, py: '15px', borderBottom: `1px solid ${AppColors.border}`, background: AppColors.surface }}>
+              <AppBox sx={{ width: 38, height: 38, display: 'grid', placeItems: 'center', borderRadius: '12px', background: AppColors.grad, fontFamily: '"Space Grotesk", sans-serif', fontSize: '0.9rem', fontWeight: 700, color: AppColors.btnText }}>DS</AppBox>
               <AppBox>
                 <AppBox sx={{ fontSize: '0.95rem', fontWeight: 600 }}>Dalia's Assistant</AppBox>
-                <AppBox sx={{ display: 'flex', alignItems: 'center', gap: 0.75, fontSize: '0.75rem', color: 'var(--muted)' }}>
+                <AppBox sx={{ display: 'flex', alignItems: 'center', gap: 0.75, fontSize: '0.75rem', color: AppColors.muted }}>
                   <AppBox component="span" sx={{ width: 7, height: 7, borderRadius: '50%', background: AppColors.online }} /> Online
                 </AppBox>
               </AppBox>
-              <AppBox component="button" onClick={() => setOpen(false)} aria-label="Close" sx={{ ml: 'auto', border: 'none', background: 'none', cursor: 'pointer', borderRadius: '8px', p: 0.75, color: 'var(--muted)', transition: 'color .2s, background .2s', '&:hover': { background: 'var(--surface)', color: 'var(--text)' } }}>✕</AppBox>
+              <AppBox component="button" onClick={() => setOpen(false)} aria-label="Close" sx={{ ml: 'auto', border: 'none', background: 'none', cursor: 'pointer', borderRadius: '8px', p: 0.75, color: AppColors.muted, transition: 'color .2s, background .2s', '&:hover': { background: AppColors.surface, color: AppColors.text } }}>✕</AppBox>
             </AppBox>
 
             <AppBox ref={bodyRef} sx={{ flex: 1, overflowY: 'auto', p: 2, display: 'flex', flexDirection: 'column', gap: 1.25 }}>
@@ -125,8 +125,8 @@ export default function ChatBot() {
                   sx={{
                     ...bubbleBase,
                     ...(m.role === 'user'
-                      ? { alignSelf: 'flex-end', borderBottomRightRadius: '5px', background: 'var(--grad)', color: 'var(--btn-text)' }
-                      : { alignSelf: 'flex-start', borderBottomLeftRadius: '5px', border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text)' }),
+                      ? { alignSelf: 'flex-end', borderBottomRightRadius: '5px', background: AppColors.grad, color: AppColors.btnText }
+                      : { alignSelf: 'flex-start', borderBottomLeftRadius: '5px', border: `1px solid ${AppColors.border}`, background: AppColors.surface, color: AppColors.text }),
                   }}
                 >
                   {m.content}
@@ -134,10 +134,10 @@ export default function ChatBot() {
               ))}
 
               {typing && (
-                <AppBox sx={{ ...bubbleBase, alignSelf: 'flex-start', borderBottomLeftRadius: '5px', border: '1px solid var(--border)', background: 'var(--surface)' }}>
+                <AppBox sx={{ ...bubbleBase, alignSelf: 'flex-start', borderBottomLeftRadius: '5px', border: `1px solid ${AppColors.border}`, background: AppColors.surface }}>
                   <AppBox component="span" sx={{ display: 'inline-flex', gap: 0.5, py: 0.5 }}>
                     {[0, 0.15, 0.3].map((d) => (
-                      <AppBox key={d} component="span" sx={{ width: 7, height: 7, borderRadius: '50%', background: 'var(--muted)', animation: 'chatbounce 1.2s infinite ease-in-out', animationDelay: `${d}s` }} />
+                      <AppBox key={d} component="span" sx={{ width: 7, height: 7, borderRadius: '50%', background: AppColors.muted, animation: 'chatbounce 1.2s infinite ease-in-out', animationDelay: `${d}s` }} />
                     ))}
                   </AppBox>
                 </AppBox>
@@ -153,7 +153,7 @@ export default function ChatBot() {
                       whileHover={{ y: -2 }}
                       whileTap={{ scale: 0.95 }}
                       transition={AppAnimationMotion.spring}
-                      sx={{ borderRadius: '999px', px: '13px', py: 1, fontSize: '0.8rem', cursor: 'pointer', color: 'var(--text)', background: 'var(--surface)', border: '1px solid var(--border)', transition: 'border-color .2s', '&:hover': { borderColor: 'rgba(129,140,248,0.5)' } }}
+                      sx={{ borderRadius: '999px', px: '13px', py: 1, fontSize: '0.8rem', cursor: 'pointer', color: AppColors.text, background: AppColors.surface, border: `1px solid ${AppColors.border}`, transition: 'border-color .2s', '&:hover': { borderColor: 'rgba(129,140,248,0.5)' } }}
                     >
                       {s}
                     </AppBox>
@@ -162,13 +162,13 @@ export default function ChatBot() {
               )}
             </AppBox>
 
-            <AppBox component="form" onSubmit={(e) => { e.preventDefault(); send(input); }} sx={{ display: 'flex', gap: 1, p: 1.5, borderTop: '1px solid var(--border)', background: 'var(--surface)' }}>
+            <AppBox component="form" onSubmit={(e) => { e.preventDefault(); send(input); }} sx={{ display: 'flex', gap: 1, p: 1.5, borderTop: `1px solid ${AppColors.border}`, background: AppColors.surface }}>
               <InputBase
                 inputRef={inputRef}
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 placeholder="Ask me anything…"
-                sx={{ flex: 1, borderRadius: '999px', border: '1px solid var(--border)', background: 'var(--bg-soft)', px: '15px', py: '4px', fontSize: '0.9rem', color: 'var(--text)', transition: 'border-color .2s', '&.Mui-focused': { borderColor: 'rgba(129,140,248,0.6)' } }}
+                sx={{ flex: 1, borderRadius: '999px', border: `1px solid ${AppColors.border}`, background: AppColors.bgSoft, px: '15px', py: '4px', fontSize: '0.9rem', color: AppColors.text, transition: 'border-color .2s', '&.Mui-focused': { borderColor: 'rgba(129,140,248,0.6)' } }}
               />
               <AppBox
                 component={motion.button}
@@ -178,7 +178,7 @@ export default function ChatBot() {
                 whileHover={{ scale: 1.08 }}
                 whileTap={{ scale: 0.9 }}
                 transition={AppAnimationMotion.spring}
-                sx={{ width: 40, height: 40, flexShrink: 0, display: 'grid', placeItems: 'center', borderRadius: '50%', border: 'none', cursor: 'pointer', background: 'var(--grad)', color: 'var(--btn-text)', '&:disabled': { opacity: 0.45, cursor: 'default' } }}
+                sx={{ width: 40, height: 40, flexShrink: 0, display: 'grid', placeItems: 'center', borderRadius: '50%', border: 'none', cursor: 'pointer', background: AppColors.grad, color: AppColors.btnText, '&:disabled': { opacity: 0.45, cursor: 'default' } }}
               >
                 ➤
               </AppBox>
